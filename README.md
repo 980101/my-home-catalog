@@ -11,7 +11,7 @@
 
 ## Application Version
 
-- minSdkVersion : 16
+- minSdkVersion : 21
 - targetSdkVersion : 30
 
 ## Screen Shots 📷
