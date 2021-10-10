@@ -7,7 +7,7 @@
 4. 물품 즐겨찾기
 
 ## Development Environment 🌏
-- Android Studio @
+- Android Studio @ arctic fox 2020.3.1 Patch2
 
 ## Application Version
 
