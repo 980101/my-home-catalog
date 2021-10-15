@@ -2,7 +2,7 @@
 각 인테리어 스타일의 이미지 데이터를 점검하여 정확도를 향상
 
 ## 네이버 웹 페이지 크롤링
-: 각 스타일의 이미지 데이터를 수집하여, 데이터의 양을 증가시킨다.
+: zen, industrial 스타일의 이미지 데이터를 추가로 수집하여 데이터의 양을 증가시킨다.
 
 ✔ 이미지 클릭이 안되는 오류 발생 → stack overflow의 글 참고 [here](https://stackoverflow.com/questions/48614856/python-webdriver-is-not-working-with-css-selector)
 
