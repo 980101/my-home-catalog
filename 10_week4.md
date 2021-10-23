@@ -12,3 +12,30 @@
 
 ## 데이터 세트 수집
 : 5가지 품목 ( 소파, 의자, 침대, 서랍장, 식탁 ) 에 해당하는 가구를 '오늘의 집'에서 이미지, 이름, 가격, 구매 링크의 데이터를 수집한다. → 크롤링 진행 ❕
+
+### 사용한 코드
+```python
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import urllib.request
+
+driver = webdriver.Chrome()
+
+# 오늘의 집(특정 가구 목록)으로 이동
+driver.get("https://ohou.se/store/category?category=0_6_7")
+
+# 이미지 저장
+images = driver.find_elements_by_css_selector(".virtualized-list .image")
+
+count = 1
+for image in images:
+    try:
+        urllib.request.urlretrieve(image.get_attribute(
+            "src"), "table" + str(count) + ".png")
+        count = count + 1
+    except:
+        pass
+
+driver.close()
+
+```
