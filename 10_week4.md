@@ -39,3 +39,5 @@ for image in images:
 driver.close()
 
 ```
+## 결과
+: 테스트를 위해 각 6개의 이미지 데이터와 나머지 데이터를 수집하였다.
