@@ -1,2 +1,54 @@
 # DB에 데이터 추가
-링크 데이터가 누락되어, 추가
+: 링크 데이터를 수집하여, 추가함
+
+## 추가 크롤링 진행
+일부 데이터는 크롤링을 사용하여, 진행하였다.
+
+### 사용한 코드
+```python
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import urllib.request
+import time
+
+driver = webdriver.Chrome()
+
+# 오늘의 집(특정 가구 목록)으로 이동
+driver.get("https://ohou.se/store/category?category=0_2_5")
+
+# 가구 선택
+funitures = driver.find_elements_by_css_selector(
+    ".virtualized-list .category-feed__content__item-wrap")
+
+funitures[0].click()
+
+# 사진 수집
+time.sleep(2)
+image = driver.find_element_by_css_selector(
+    "img.production-selling-cover-image__entry__image").get_attribute("src")
+try:
+    urllib.request.urlretrieve(image, "dresser1.png")
+except:
+    pass
+
+# 링크 데이터 수집
+time.sleep(3)
+print(driver.current_url)
+
+# 이름 데이터 수집
+time.sleep(2)
+name = driver.find_element_by_css_selector(
+    "span.production-selling-header__title__name").get_attribute("innerHTML")
+print(name)
+
+# 가격 데이터 수집
+time.sleep(2)
+price = driver.find_element_by_css_selector(
+    "span.production-selling-header__price__price .number").get_attribute("innerHTML")
+print(price + "원")
+
+driver.close()
+```
+
+# 본 프로젝트에 적용
+: 링크 데이터를 제외한 나머지 데이터를 출력함
