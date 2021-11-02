@@ -1,5 +1,5 @@
-0 zen
-1 natural
-2 modern
-3 industrial
-4 classic
+zen
+natural
+modern
+industrial
+classic
