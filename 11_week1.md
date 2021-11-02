@@ -50,5 +50,7 @@ print(price + "원")
 driver.close()
 ```
 
-# 본 프로젝트에 적용
-: 링크 데이터를 제외한 나머지 데이터를 출력함
+## 적용
+: 이미지, 이름, 가격 데이터를 출력함. 링크 데이터는 추후 적용
+
+<img width="350" src="https://user-images.githubusercontent.com/47620950/139801959-71733f69-31cf-4604-8612-203d4871ddf9.jpg">
