@@ -54,3 +54,12 @@ driver.close()
 : 이미지, 이름, 가격 데이터를 출력함. 링크 데이터는 추후 적용
 
 <img width="350" src="https://user-images.githubusercontent.com/47620950/139801959-71733f69-31cf-4604-8612-203d4871ddf9.jpg">
+
+
+# 가구 별 데이터 출력
+: 가구 버튼 중 하나를 클릭했을 때, 해당 가구의 데이터만 출력되도록 한다
+
+## 데이터베이스 변경
+데이터 참조를 고려하여 가구를 기준으로 데이터가 분류되도록 구조를 변경하였다
+
+<img src="https://user-images.githubusercontent.com/47620950/140290093-65cf4d58-c4ed-4e23-b757-b49ab7a2c05d.PNG" width="600">
