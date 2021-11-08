@@ -6,9 +6,125 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="모든 스타일"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 스타일 선택 메뉴 -->
+    <HorizontalScrollView
+        android:id="@+id/scroll_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+        <LinearLayout
+            android:id="@+id/list_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btn_style_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모두" />
+
+            <Button
+                android:id="@+id/btn_style_natural"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="내추럴" />
+
+            <Button
+                android:id="@+id/btn_style_modern"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="모던" />
+
+            <Button
+                android:id="@+id/btn_style_classic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="클래식" />
+
+            <Button
+                android:id="@+id/btn_style_zen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="젠" />
+
+            <Button
+                android:id="@+id/btn_style_industrial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인더스트리얼" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- 가구 선택 메뉴 -->
+    <HorizontalScrollView
+        android:id="@+id/scroll_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_style">
+
+        <LinearLayout
+            android:id="@+id/list_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_type_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All" />
+
+            <Button
+                android:id="@+id/btn_type_chair"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chair" />
+
+            <Button
+                android:id="@+id/btn_type_bed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bed" />
+
+            <Button
+                android:id="@+id/btn_type_sofa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sofa" />
+
+            <Button
+                android:id="@+id/btn_type_dresser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dresser" />
+
+            <Button
+                android:id="@+id/btn_type_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="table" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- 가구 아이템 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_funiture"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_type" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package org.tensorflow.lite.examples.classification;
 
+import static java.sql.DriverManager.println;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,30 +33,200 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 가구명 배열
+        String names[] = {"bed", "chair", "dresser", "sofa", "table"};
+
         arrayList = new ArrayList<>();
 
         // DB: 데이터베이스 연동
         database = FirebaseDatabase.getInstance();
 
         // DB : 데이터베이스 테이블 연결
-        databaseReference = database.getReference("item");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference = database.getReference("all");
 
-            // 데이터를 받아오는 경우 호출
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                arrayList.clear();
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    ItemData itemData = postSnapshot.getValue(ItemData.class);
-                    arrayList.add(itemData);
+        for (int i = 0; i < names.length; i++) {
+            databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                // 데이터를 받아오는 경우 호출
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                        ItemData itemData = postSnapshot.getValue(ItemData.class);
+                        arrayList.add(itemData);
+                    }
+                    adapter.notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
-            }
 
+                @Override
+                // 데이터를 읽어오지 못한 경우 호출
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e("MainActivity", String.valueOf(error.toException()));
+                }
+            });
+        }
+
+        // 가구 버튼 : chair
+        final Button btn_type_chair = findViewById(R.id.btn_type_chair);
+        btn_type_chair.setOnClickListener(new View.OnClickListener() {
             @Override
-            // 데이터를 읽어오지 못한 경우 호출
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("MainActivity", String.valueOf(error.toException()));
+            public void onClick(View v) {
+                databaseReference.child("chair").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    // 데이터를 받아오는 경우 호출
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    arrayList.clear();
+                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                            ItemData itemData = postSnapshot.getValue(ItemData.class);
+                            arrayList.add(itemData);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    // 데이터를 읽어오지 못한 경우 호출
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MainActivity", String.valueOf(error.toException()));
+                    }
+                });
+            }
+        });
+
+        // 가구 버튼 : bed
+        final Button btn_type_bed = findViewById(R.id.btn_type_bed);
+        btn_type_bed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseReference.child("bed").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    // 데이터를 받아오는 경우 호출
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        arrayList.clear();
+                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                            ItemData itemData = postSnapshot.getValue(ItemData.class);
+                            arrayList.add(itemData);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    // 데이터를 읽어오지 못한 경우 호출
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MainActivity", String.valueOf(error.toException()));
+                    }
+                });
+            }
+        });
+
+        // 가구 버튼 : sofa
+        final Button btn_type_sofa = findViewById(R.id.btn_type_sofa);
+        btn_type_sofa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseReference.child("sofa").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    // 데이터를 받아오는 경우 호출
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    arrayList.clear();
+                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                            ItemData itemData = postSnapshot.getValue(ItemData.class);
+                            arrayList.add(itemData);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    // 데이터를 읽어오지 못한 경우 호출
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MainActivity", String.valueOf(error.toException()));
+                    }
+                });
+            }
+        });
+
+        // 가구 버튼 : dresser
+        final Button btn_type_dresser = findViewById(R.id.btn_type_dresser);
+        btn_type_dresser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseReference.child("dresser").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    // 데이터를 받아오는 경우 호출
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        arrayList.clear();
+                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                            ItemData itemData = postSnapshot.getValue(ItemData.class);
+                            arrayList.add(itemData);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    // 데이터를 읽어오지 못한 경우 호출
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MainActivity", String.valueOf(error.toException()));
+                    }
+                });
+            }
+        });
+
+        // 가구 버튼 : table
+        final Button btn_type_table = findViewById(R.id.btn_type_table);
+        btn_type_table.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseReference.child("table").addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    // 데이터를 받아오는 경우 호출
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        arrayList.clear();
+                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                            ItemData itemData = postSnapshot.getValue(ItemData.class);
+                            arrayList.add(itemData);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    // 데이터를 읽어오지 못한 경우 호출
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MainActivity", String.valueOf(error.toException()));
+                    }
+                });
+            }
+        });
+
+        // 가구 버튼 : all
+        final Button btn_type_all = findViewById(R.id.btn_type_all);
+        btn_type_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+
+                for (int i = 0; i < names.length; i++) {
+                    databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        // 데이터를 받아오는 경우 호출
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                arrayList.add(itemData);
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        // 데이터를 읽어오지 못한 경우 호출
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("MainActivity", String.valueOf(error.toException()));
+                        }
+                    });
+                }
             }
         });
 
