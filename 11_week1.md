@@ -56,7 +56,7 @@ driver.close()
 <img width="350" src="https://user-images.githubusercontent.com/47620950/139801959-71733f69-31cf-4604-8612-203d4871ddf9.jpg">
 
 
-# 가구 별 데이터 출력
+# 가구 별 데이터 출력 1️⃣
 : 가구 버튼 중 하나를 클릭했을 때, 해당 가구의 데이터만 출력되도록 한다
 
 ## 데이터베이스 변경
