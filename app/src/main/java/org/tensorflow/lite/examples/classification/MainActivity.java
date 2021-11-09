@@ -230,6 +230,196 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 스타일 버튼 : 모두
+        final Button btn_style_all = findViewById(R.id.btn_style_all);
+        btn_style_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+
+                for (int i = 0; i < names.length; i++) {
+                    databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        // 데이터를 받아오는 경우 호출
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                arrayList.add(itemData);
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        // 데이터를 읽어오지 못한 경우 호출
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("MainActivity", String.valueOf(error.toException()));
+                        }
+                    });
+                }
+            }
+        });
+
+        // 스타일 버튼 : 내추럴
+        final Button btn_style_natural = findViewById(R.id.btn_style_natural);
+        btn_style_natural.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+
+                for (int i = 0; i < names.length; i++) {
+                    databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        // 데이터를 받아오는 경우 호출
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                if (postSnapshot.child("style").getValue().equals("natural")) {
+                                    ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                    arrayList.add(itemData);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        // 데이터를 읽어오지 못한 경우 호출
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("MainActivity", String.valueOf(error.toException()));
+                        }
+                    });
+                }
+            }
+        });
+
+        // 스타일 버튼 : 모던
+        final Button btn_style_modern = findViewById(R.id.btn_style_modern);
+        btn_style_modern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+
+                for (int i = 0; i < names.length; i++) {
+                    databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        // 데이터를 받아오는 경우 호출
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                if (postSnapshot.child("style").getValue().equals("modern")) {
+                                    ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                    arrayList.add(itemData);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        // 데이터를 읽어오지 못한 경우 호출
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("MainActivity", String.valueOf(error.toException()));
+                        }
+                    });
+                }
+            }
+        });
+
+        // 스타일 버튼 : 클래식
+        final Button btn_style_classic = findViewById(R.id.btn_style_classic);
+        btn_style_classic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+
+                for (int i = 0; i < names.length; i++) {
+                    databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        // 데이터를 받아오는 경우 호출
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                if (postSnapshot.child("style").getValue().equals("classic")) {
+                                    ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                    arrayList.add(itemData);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        // 데이터를 읽어오지 못한 경우 호출
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("MainActivity", String.valueOf(error.toException()));
+                        }
+                    });
+                }
+            }
+        });
+
+        // 스타일 버튼 : 젠
+        final Button btn_style_zen = findViewById(R.id.btn_style_zen);
+        btn_style_zen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+
+                for (int i = 0; i < names.length; i++) {
+                    databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        // 데이터를 받아오는 경우 호출
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                if (postSnapshot.child("style").getValue().equals("zen")) {
+                                    ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                    arrayList.add(itemData);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        // 데이터를 읽어오지 못한 경우 호출
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("MainActivity", String.valueOf(error.toException()));
+                        }
+                    });
+                }
+            }
+        });
+
+        // 스타일 버튼 : 인더스트리얼
+        final Button btn_style_industrial = findViewById(R.id.btn_style_industrial);
+        btn_style_industrial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrayList.clear();
+
+                for (int i = 0; i < names.length; i++) {
+                    databaseReference.child(names[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        // 데이터를 받아오는 경우 호출
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                if (postSnapshot.child("style").getValue().equals("industrial")) {
+                                    ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                    arrayList.add(itemData);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        // 데이터를 읽어오지 못한 경우 호출
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("MainActivity", String.valueOf(error.toException()));
+                        }
+                    });
+                }
+            }
+        });
+
         // 리사이클러뷰에 LinearLayoutManager 객체 지정
         recyclerView = findViewById(R.id.list_funiture);
         recyclerView.setHasFixedSize(true);

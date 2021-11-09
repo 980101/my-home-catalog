@@ -43,11 +43,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        아래와 같다.
-//        Context context = parent.getContext();
-//        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View view = inflater.inflate(R.layout.item_funiture, parent, false);
-//        ViewHolder holder = new ViewHolder(view);
+
+        /*
+        아래와 같다.
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.item_funiture, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+        */
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_funiture, parent, false);
         ViewHolder holder = new ViewHolder(view);
