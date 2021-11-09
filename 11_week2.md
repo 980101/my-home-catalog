@@ -10,4 +10,4 @@
 
 ✔ 각 데이터의 스타일은 teachable machine의 모델을 통한 결과를 값으로 할당함.
 
-<img src="https://user-images.githubusercontent.com/47620950/140731754-c98ff875-7f09-4627-8646-43955bfa6ebe.PNG" width="600">
+<img src="https://user-images.githubusercontent.com/47620950/140895372-74b6593d-7e20-498b-ab10-a28bac3a3322.PNG" width="600">
