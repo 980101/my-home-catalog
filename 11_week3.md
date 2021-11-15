@@ -7,6 +7,6 @@
 ![DB수정](https://user-images.githubusercontent.com/47620950/141795726-d6153764-b679-4983-90cf-c92c3071e927.PNG)
 
 ## 데이터 출력 오류 해결
-적절히 constraint 되지 않아 RecyclerView 하단의 아이템이 보이지 않은 오류를 해결
+constraint가 적절히 되지 않아 RecyclerView 하단의 아이템이 보이지 않은 오류 발생 →  stack overflow의 글 참고 [here](https://stackoverflow.com/questions/51342917/last-item-in-recyclerview-is-cut-off) 😀
 
-✔ recyclerView의 마지막 아이템이 잘리는 오류 발생 →  stack overflow의 글 참고 [here](https://stackoverflow.com/questions/51342917/last-item-in-recyclerview-is-cut-off)
+<img src="https://user-images.githubusercontent.com/47620950/141802543-c7395e51-ddbc-4a9e-a1cf-6782183ccb9d.jpg" width=300> < 변경 전 > <img src="https://user-images.githubusercontent.com/47620950/141802787-d6c72525-b562-43ff-97e3-68b86f96113d.jpg" width=300> < 변경 후 >
