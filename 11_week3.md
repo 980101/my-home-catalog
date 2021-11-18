@@ -12,7 +12,7 @@ constraint가 적절히 되지 않아 RecyclerView 하단의 아이템이 보이
 <img src="https://user-images.githubusercontent.com/47620950/141802543-c7395e51-ddbc-4a9e-a1cf-6782183ccb9d.jpg" width=300> < 변경 전 > <img src="https://user-images.githubusercontent.com/47620950/141802787-d6c72525-b562-43ff-97e3-68b86f96113d.jpg" width=300> < 변경 후 >
 
 # 이미지 분류 결과에 따른 출력
-: 이미지 분류 후, 메인화면으로 이동하고 분류 결과에 해당하는 데이터를 출력
+: 이미지 분류 후, 버튼 클릭하면 메인화면으로 이동. 이때 분류 결과에 따라 해당하는 데이터가 출력
 
 ## 진행 과정
 1️⃣ 이미지 분류 진행
