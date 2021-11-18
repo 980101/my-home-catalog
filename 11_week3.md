@@ -10,3 +10,31 @@
 constraint가 적절히 되지 않아 RecyclerView 하단의 아이템이 보이지 않은 오류 발생 →  stack overflow의 글 참고 [here](https://stackoverflow.com/questions/51342917/last-item-in-recyclerview-is-cut-off) 😀
 
 <img src="https://user-images.githubusercontent.com/47620950/141802543-c7395e51-ddbc-4a9e-a1cf-6782183ccb9d.jpg" width=300> < 변경 전 > <img src="https://user-images.githubusercontent.com/47620950/141802787-d6c72525-b562-43ff-97e3-68b86f96113d.jpg" width=300> < 변경 후 >
+
+# 이미지 분류 결과에 따른 출력
+: 이미지 분류 후, 메인화면으로 이동하고 분류 결과에 해당하는 데이터를 출력
+
+## 진행 과정
+1️⃣ 이미지 분류 진행
+
+2️⃣ 정확도 90% 이상의 클래스명을 추출
+
+3️⃣ 메인 화면으로 이동 ( + 분류된 클래스명 )
+
+4️⃣ 데이터 출력
+
+## 메인 화면으로 이동
+```java
+Button btn_capture = findViewById(R.id.btn_capture);
+    btn_capture.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (!TextUtils.isEmpty(recognitionStyle.getText())) {
+          Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+          // style : 분류된 클래스명
+          intent.putExtra("style", recognitionStyle.getText().toString());
+          startActivity(intent);
+        }
+      }
+    });
+```
