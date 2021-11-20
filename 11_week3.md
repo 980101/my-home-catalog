@@ -39,7 +39,7 @@ Button btn_capture = findViewById(R.id.btn_capture);
     });
 ```
 
-## 버튼 클릭 이벤트 리스너 수정
+### 버튼 클릭 이벤트 리스너 수정
 익명 클래스를 만들고, 이를 참조하는 형식으로 수정하여 가독성을 증가
 
 ```java
