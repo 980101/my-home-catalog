@@ -38,3 +38,39 @@ Button btn_capture = findViewById(R.id.btn_capture);
       }
     });
 ```
+
+## 버튼 클릭 이벤트 리스너 수정
+익명 클래스를 만들고, 이를 참조하는 형식으로 수정하여 가독성을 증가
+
+```java
+        // 이벤트 리스너 : 스타일 버튼
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Arrays.fill(styles, null);
+
+                switch (v.getId()) {
+                    case R.id.btn_style_natural:
+                        styles[0] = "natural";
+                        break;
+                    case R.id.btn_style_modern:
+                        styles[0] = "modern";
+                        break;
+                    case R.id.btn_style_classic:
+                        styles[0] = "classic";
+                        break;
+                    case R.id.btn_style_industrial:
+                        styles[0] = "industrial";
+                        break;
+                    case R.id.btn_style_zen:
+                        styles[0] = "zen";
+                        break;
+                }
+                ...
+            }
+        };
+
+        // 이벤트 처리
+        Button btn_style_natural = findViewById(R.id.btn_style_natural);
+        btn_style_natural.setOnClickListener(onClickListener);
+```
