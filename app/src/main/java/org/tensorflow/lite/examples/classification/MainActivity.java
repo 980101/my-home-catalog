@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,16 +35,13 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private DatabaseReference styleList;
+    private View pressedStyleBtn;
+    private View pressedTypeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // 타이틀
-        TextView tv_title = findViewById(R.id.tv_title);
-        Intent intent = getIntent();
-        tv_title.setText(intent.getStringExtra("style"));
 
         // 가구명 배열
         String types[] = {"bed", "chair", "dresser", "sofa", "table"};
@@ -58,35 +56,63 @@ public class MainActivity extends AppCompatActivity {
         // DB : 데이터베이스 테이블 연결
         databaseReference = database.getReference("all");
 
+        // 타이틀 설정
+        TextView tv_title = findViewById(R.id.tv_title);
+        Intent intent = getIntent();
+        String funiture = intent.getStringExtra("style");
+        tv_title.setText(funiture);
+
         // 스타일 별 데이터 출력 - 초기화면
         // 여기에 intent 값 체크해서 변경해주기
+        if (funiture != null) {
+            Arrays.fill(styles, null);
+            styles[0] = funiture;
+        }
+
         for (int i = 0; i < styles.length; i++) {
-            databaseReference.child(styles[i]).addListenerForSingleValueEvent(new ValueEventListener() {
-                // 데이터 받아오는 경우 호출
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (int j = 0; j < types.length; j++) {
-                        for (DataSnapshot postSnapshot: snapshot.child(types[j]).getChildren()) {
-                            ItemData itemData = postSnapshot.getValue(ItemData.class);
-                            arrayList.add(itemData);
+            if (styles[i] == null) {
+                break;
+            } else {
+                databaseReference.child(styles[i]).addListenerForSingleValueEvent(new ValueEventListener() {
+                    // 데이터 받아오는 경우 호출
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (int j = 0; j < types.length; j++) {
+                            for (DataSnapshot postSnapshot: snapshot.child(types[j]).getChildren()) {
+                                ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                arrayList.add(itemData);
+                            }
                         }
+
+                        adapter.notifyDataSetChanged();
                     }
 
-                    adapter.notifyDataSetChanged();
-                }
-
-                // 데이터 읽어오지 못한 경우 호출
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e("MainActivity", String.valueOf(error.toException()));
-                }
-            });
+                    // 데이터 읽어오지 못한 경우 호출
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MainActivity", String.valueOf(error.toException()));
+                    }
+                });
+            }
         }
 
         // 이벤트 리스너 : 스타일 버튼
+
+        // 버튼 색상 체크 변수
+        pressedStyleBtn = null;
+
         View.OnClickListener onClickListnerByStyle = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (pressedStyleBtn == null) {
+                    pressedStyleBtn = v;
+                } else if (pressedStyleBtn != v) {
+                    pressedStyleBtn.setBackground(getDrawable(R.drawable.btn_style_unclicked));
+                    pressedStyleBtn = v;
+                }
+
+                v.setBackground(getDrawable(R.drawable.btn_style_clicked));
+
                 Arrays.fill(types, null);
                 types[0] = "bed";
                 types[1] = "chair";
@@ -154,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        Button btn_style_all = findViewById(R.id.btn_style_all);
+        btn_style_all.setOnClickListener(onClickListnerByStyle);
         Button btn_style_natural = findViewById(R.id.btn_style_natural);
         btn_style_natural.setOnClickListener(onClickListnerByStyle);
         Button btn_style_modern = findViewById(R.id.btn_style_modern);
@@ -165,10 +193,49 @@ public class MainActivity extends AppCompatActivity {
         Button btn_style_zen = findViewById(R.id.btn_style_zen);
         btn_style_zen.setOnClickListener(onClickListnerByStyle);
 
+        // 초기 스타일의 버튼 배경 설정
+        switch (funiture) {
+            case "all" :
+                btn_style_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedStyleBtn = btn_style_all;
+                break;
+            case "natural" :
+                btn_style_natural.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedStyleBtn = btn_style_natural;
+                break;
+            case "modern" :
+                btn_style_modern.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedStyleBtn = btn_style_modern;
+                break;
+            case "classic" :
+                btn_style_classic.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedStyleBtn = btn_style_classic;
+                break;
+            case "industrial" :
+                btn_style_industrial.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedStyleBtn = btn_style_industrial;
+                break;
+            case "zen" :
+                btn_style_zen.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedStyleBtn = btn_style_zen;
+                break;
+        }
+
         // 이벤트 리스너 : 가구 버튼
+        pressedTypeBtn = null;
+
         View.OnClickListener onClickListenerByType = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (pressedTypeBtn == null) {
+                    pressedTypeBtn = v;
+                } else if (pressedTypeBtn != v) {
+                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_style_unclicked));
+                    pressedTypeBtn = v;
+                }
+
+                pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_style_clicked));
+
                 Arrays.fill(types, null);
 
                 switch (v.getId()) {
@@ -234,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        Button btn_type_all = findViewById(R.id.btn_type_all);
+        btn_type_all.setOnClickListener(onClickListenerByType);
         Button btn_type_chair = findViewById(R.id.btn_type_chair);
         btn_type_chair.setOnClickListener(onClickListenerByType);
         Button btn_type_bed = findViewById(R.id.btn_type_bed);
@@ -244,6 +313,10 @@ public class MainActivity extends AppCompatActivity {
         btn_type_dresser.setOnClickListener(onClickListenerByType);
         Button btn_type_table = findViewById(R.id.btn_type_table);
         btn_type_table.setOnClickListener(onClickListenerByType);
+
+        // 초기 가구의 버튼 배경 설정
+        btn_type_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
+        pressedTypeBtn = btn_type_all;
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정
         recyclerView = findViewById(R.id.list_funiture);
