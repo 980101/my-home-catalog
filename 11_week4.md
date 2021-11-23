@@ -5,3 +5,25 @@
 
 # 초기 화면 구현
 : 앱 실행 시, 처음 실행되는 화면을 구현
+
+## 레이아웃 구현
+(적용 사진)
+### 적용
+```xml
+<!-- 시작 화면으로 설정 -->
+<activity
+    android:name=".InitialActivity"
+    android:label="@string/tfe_ic_app_name"
+    android:screenOrientation="portrait"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+```
+## Intent 적용
+(사진)
+
+# 맞춤가구 선택 화면 구현
