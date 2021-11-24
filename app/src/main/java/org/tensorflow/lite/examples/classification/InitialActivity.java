@@ -29,8 +29,8 @@ public class InitialActivity extends AppCompatActivity {
         btn_custom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentToCamera = new Intent(getApplicationContext(), ClassifierActivity.class);
-                startActivity(intentToCamera);
+                Intent intentToCustom = new Intent(getApplicationContext(), CustomActivity.class);
+                startActivity(intentToCustom);
             }
         });
     }
