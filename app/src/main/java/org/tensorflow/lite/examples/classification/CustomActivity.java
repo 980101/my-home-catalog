@@ -9,15 +9,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class CustomActivity extends AppCompatActivity {
+public class CustomActivity extends AppCompatActivity implements CustomAdapter.OnListItemSelectedInterface{
 
     private ArrayList<CustomData> arrayList;
     private CustomAdapter customAdapter;
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
+    private String furniture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class CustomActivity extends AppCompatActivity {
         arrayList.add(new CustomData(R.drawable.ic_dresser, "Dresser"));
         arrayList.add(new CustomData(R.drawable.ic_table, "Table"));
 
-        customAdapter = new CustomAdapter(arrayList);
+        customAdapter = new CustomAdapter(arrayList, this);
         recyclerView.setAdapter(customAdapter);
 
         // '다음' 버튼 이벤트
@@ -47,8 +49,15 @@ public class CustomActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intentToCamera = new Intent(getApplicationContext(), ClassifierActivity.class);
+                intentToCamera.putExtra("type", furniture);
                 startActivity(intentToCamera);
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(View v, int position) {
+        CustomAdapter.CustomViewHolder viewHolder = (CustomAdapter.CustomViewHolder)recyclerView.findViewHolderForAdapterPosition(position);
+        furniture = viewHolder.tv_name.getText().toString();
     }
 }

@@ -1,5 +1,8 @@
 package org.tensorflow.lite.examples.classification;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,17 +11,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
+    // 선택된 아이템의 인덱스 추출
+    public interface OnListItemSelectedInterface {
+        void onItemSelected(View v, int position);
+    }
+
+    private OnListItemSelectedInterface mListener;
+
     // 리사이클러뷰의 아이템을 담는 배열
     private ArrayList<CustomData> arrayList;
 
-    public CustomAdapter(ArrayList<CustomData> arrayList) {
+    public CustomAdapter(ArrayList<CustomData> arrayList, OnListItemSelectedInterface listener) {
         this.arrayList = arrayList;
+        this.mListener = listener;
     }
 
     // 아이템이 처음 생성될 때의 생명 주기
@@ -32,6 +44,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     }
 
     // 아이템이 추가될 때의 생명 주기
+    int itemIdx = -1;
+
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.CustomViewHolder holder, int position) {
         holder.iv_icon.setImageResource(arrayList.get(position).getIv_icon());
@@ -41,10 +55,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String curName = holder.tv_name.getText().toString();
-                Toast.makeText(v.getContext(), curName, Toast.LENGTH_SHORT).show();
+                itemIdx = holder.getAdapterPosition();
+                mListener.onItemSelected(v,itemIdx);
+                notifyDataSetChanged();
             }
         });
+        if (itemIdx == holder.getPosition()) {
+            holder.itemView.setBackgroundResource(R.drawable.btn_custom_clicked);;
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.btn_custom_unclicked);
+        }
     }
 
     @Override
@@ -54,10 +74,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     // 생성한 클래스
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-
         protected ImageView iv_icon;
         protected TextView tv_name;
-        int itemIdx = -1;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);

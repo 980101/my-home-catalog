@@ -37,12 +37,16 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference styleList;
     private View pressedStyleBtn;
     private View pressedTypeBtn;
-    private String funiture;
+    private String pickedStyle, pickedType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Intent 데이터 받아오기
+        pickedStyle = getIntent().getStringExtra("style") != null ? getIntent().getStringExtra("style") : "all";
+        pickedType = getIntent().getStringExtra("type");
 
         // 가구명 배열
         String types[] = {"bed", "chair", "dresser", "sofa", "table"};
@@ -59,16 +63,15 @@ public class MainActivity extends AppCompatActivity {
 
         // 타이틀 설정
         TextView tv_title = findViewById(R.id.tv_title);
-        Intent intent = getIntent();
-        funiture = "all";
-        if (intent.getStringExtra("style") != null) funiture = intent.getStringExtra("style");
-        chgTitle(tv_title, funiture);
+        chgTitle(tv_title, pickedStyle);
+
+//        System.out.println(getIntent().getStringExtra("type"));
 
         // 스타일 별 데이터 출력 - 초기화면
         // 여기에 intent 값 체크해서 변경해주기
-        if (funiture != null && funiture != "all") {
+        if (pickedStyle != null && pickedStyle != "all") {
             Arrays.fill(styles, null);
-            styles[0] = funiture;
+            styles[0] = pickedStyle;
         }
 
         for (int i = 0; i < styles.length; i++) {
@@ -127,23 +130,23 @@ public class MainActivity extends AppCompatActivity {
                 switch (v.getId()) {
                     case R.id.btn_style_natural:
                         styles[0] = "natural";
-                        funiture = "natural";
+                        pickedStyle = "natural";
                         break;
                     case R.id.btn_style_modern:
                         styles[0] = "modern";
-                        funiture = "modern";
+                        pickedStyle = "modern";
                         break;
                     case R.id.btn_style_classic:
                         styles[0] = "classic";
-                        funiture = "classic";
+                        pickedStyle = "classic";
                         break;
                     case R.id.btn_style_industrial:
                         styles[0] = "industrial";
-                        funiture = "industrial";
+                        pickedStyle = "industrial";
                         break;
                     case R.id.btn_style_zen:
                         styles[0] = "zen";
-                        funiture = "zen";
+                        pickedStyle = "zen";
                         break;
                     case R.id.btn_style_all:
                         styles[0] = "natural";
@@ -151,11 +154,13 @@ public class MainActivity extends AppCompatActivity {
                         styles[2] = "classic";
                         styles[3] = "industrial";
                         styles[4] = "zen";
-                        funiture = "all";
+                        pickedStyle = "all";
                         break;
                 }
 
-                chgTitle(tv_title, funiture);
+                // pickedStyle이 이전과 다를 때만 실행하기로 수정
+                chgTitle(tv_title, pickedStyle);
+
                 arrayList.clear();
 
                 for (int i = 0; i < styles.length; i++) {
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         btn_style_zen.setOnClickListener(onClickListnerByStyle);
 
         // 초기 스타일의 버튼 배경 설정
-        switch (funiture) {
+        switch (pickedStyle) {
             case "all" :
                 btn_style_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
                 pressedStyleBtn = btn_style_all;
@@ -329,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         pressedTypeBtn = btn_type_all;
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정
-        recyclerView = findViewById(R.id.list_funiture);
+        recyclerView = findViewById(R.id.list_furniture);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

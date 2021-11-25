@@ -133,7 +133,7 @@
 
     <!-- 가구 아이템 리스트 -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_funiture"
+        android:id="@+id/list_furniture"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="0dp"

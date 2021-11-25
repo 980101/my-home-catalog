@@ -103,8 +103,12 @@ public abstract class CameraActivity extends AppCompatActivity
       @Override
       public void onClick(View v) {
         if (!TextUtils.isEmpty(recognitionStyle.getText())) {
+          // Intent 데이터 받아오기
+          String furniture = getIntent().getStringExtra("type");
+
           Intent intent = new Intent(getApplicationContext(), MainActivity.class);
           intent.putExtra("style", recognitionStyle.getText().toString());
+          intent.putExtra("type", furniture);
           startActivity(intent);
         }
       }
