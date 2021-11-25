@@ -26,4 +26,23 @@
 ## Intent 적용
 (사진)
 
-# 맞춤가구 선택 화면 구현
+# 맞춤가구 선택 화면
+
+## 버튼 이벤트 적용
+선택된 버튼의 색상을 변경
+```java
+    public void onBindViewHolder(@NonNull CustomAdapter.CustomViewHolder holder, int position) {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ...
+            }
+        });
+        if (itemIdx == holder.getPosition()) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#F2A213"));
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#F3F3F3"));
+        }
+    }
+```
