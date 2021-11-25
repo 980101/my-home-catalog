@@ -41,9 +41,9 @@
         });
         
         if (itemIdx == holder.getPosition()) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F2A213"));
+            holder.itemView.setBackgroundResource(R.drawable.btn_custom_clicked);;
         } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#F3F3F3"));
+            holder.itemView.setBackgroundResource(R.drawable.btn_custom_unclicked);
         }
     }
 ```
