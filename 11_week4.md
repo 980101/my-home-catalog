@@ -39,6 +39,7 @@
                 ...
             }
         });
+        
         if (itemIdx == holder.getPosition()) {
             holder.itemView.setBackgroundColor(Color.parseColor("#F2A213"));
         } else {
