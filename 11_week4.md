@@ -54,6 +54,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 ```java
 /* CustomAdapter.java
    Interface 추가 */
+   
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
     public interface OnListItemSelectedInterface {
         void onItemSelected(View v, int position);
