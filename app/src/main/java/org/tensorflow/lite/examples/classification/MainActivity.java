@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Intent 데이터 받아오기
         pickedStyle = getIntent().getStringExtra("style") != null ? getIntent().getStringExtra("style") : "all";
-        pickedType = getIntent().getStringExtra("type");
+        pickedType = getIntent().getStringExtra("type") != null ? getIntent().getStringExtra("type") : "all";;
 
         // 가구명 배열
         String types[] = {"bed", "chair", "dresser", "sofa", "table"};
@@ -65,44 +65,49 @@ public class MainActivity extends AppCompatActivity {
         TextView tv_title = findViewById(R.id.tv_title);
         chgTitle(tv_title, pickedStyle);
 
-//        System.out.println(getIntent().getStringExtra("type"));
-
-        // 스타일 별 데이터 출력 - 초기화면
-        // 여기에 intent 값 체크해서 변경해주기
+        // 초기화면 세팅
         if (pickedStyle != null && pickedStyle != "all") {
             Arrays.fill(styles, null);
             styles[0] = pickedStyle;
+        }
+
+        if (pickedType != null && pickedType != "all") {
+            Arrays.fill(types, null);
+            types[0] = pickedType;
         }
 
         for (int i = 0; i < styles.length; i++) {
             if (styles[i] == null) {
                 break;
             } else {
-                databaseReference.child(styles[i]).addListenerForSingleValueEvent(new ValueEventListener() {
-                    // 데이터 받아오는 경우 호출
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (int j = 0; j < types.length; j++) {
-                            for (DataSnapshot postSnapshot: snapshot.child(types[j]).getChildren()) {
-                                ItemData itemData = postSnapshot.getValue(ItemData.class);
-                                arrayList.add(itemData);
+                styleList = databaseReference.child(styles[i]);
+
+                for (int j = 0; j < types.length; j++) {
+                    if (types[j] == null) {
+                        break;
+                    } else {
+
+                        styleList.child(types[j]).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                    ItemData itemData = postSnapshot.getValue(ItemData.class);
+                                    arrayList.add(itemData);
+                                }
+                                adapter.notifyDataSetChanged();
                             }
-                        }
 
-                        adapter.notifyDataSetChanged();
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e("MainActivity", String.valueOf(error.toException()));
+                            }
+                        });
                     }
-
-                    // 데이터 읽어오지 못한 경우 호출
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("MainActivity", String.valueOf(error.toException()));
-                    }
-                });
+                }
             }
         }
 
         // 이벤트 리스너 : 스타일 버튼
-
         // 버튼 색상 체크 변수
         pressedStyleBtn = null;
 
@@ -158,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                // pickedStyle이 이전과 다를 때만 실행하기로 수정
                 chgTitle(tv_title, pickedStyle);
 
                 arrayList.clear();
@@ -330,8 +334,32 @@ public class MainActivity extends AppCompatActivity {
         btn_type_table.setOnClickListener(onClickListenerByType);
 
         // 초기 가구의 버튼 배경 설정
-        btn_type_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
-        pressedTypeBtn = btn_type_all;
+        switch (pickedType) {
+            case "chair" :
+                btn_type_chair.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedTypeBtn = btn_type_chair;
+                break;
+            case "bed" :
+                btn_type_bed.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedTypeBtn = btn_type_bed;
+                break;
+            case "sofa" :
+                btn_type_sofa.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedTypeBtn = btn_type_sofa;
+                break;
+            case "dresser" :
+                btn_type_dresser.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedTypeBtn = btn_type_dresser;
+                break;
+            case "table" :
+                btn_type_table.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedTypeBtn = btn_type_table;
+                break;
+            default :
+                btn_type_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedTypeBtn = btn_type_all;
+                break;
+        }
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정
         recyclerView = findViewById(R.id.list_furniture);

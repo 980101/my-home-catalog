@@ -33,12 +33,12 @@ public class CustomActivity extends AppCompatActivity implements CustomAdapter.O
         arrayList = new ArrayList<>();
 
         // 버튼 데이터 설정
-        arrayList.add(new CustomData(R.drawable.ic_furnitures, "All"));
-        arrayList.add(new CustomData(R.drawable.ic_chair, "Chair"));
-        arrayList.add(new CustomData(R.drawable.ic_bed, "Bed"));
-        arrayList.add(new CustomData(R.drawable.ic_sofa, "Sofa"));
-        arrayList.add(new CustomData(R.drawable.ic_dresser, "Dresser"));
-        arrayList.add(new CustomData(R.drawable.ic_table, "Table"));
+        arrayList.add(new CustomData(R.drawable.ic_furnitures, "all"));
+        arrayList.add(new CustomData(R.drawable.ic_chair, "chair"));
+        arrayList.add(new CustomData(R.drawable.ic_bed, "bed"));
+        arrayList.add(new CustomData(R.drawable.ic_sofa, "sofa"));
+        arrayList.add(new CustomData(R.drawable.ic_dresser, "dresser"));
+        arrayList.add(new CustomData(R.drawable.ic_table, "table"));
 
         customAdapter = new CustomAdapter(arrayList, this);
         recyclerView.setAdapter(customAdapter);
