@@ -27,10 +27,11 @@
 (사진)
 
 # 맞춤가구 선택 화면
+: 인테리어 스타일 파악 후, 보게되는 가구 종류를 선택하는 액티비티
 
-## 버튼 이벤트 적용
-선택된 버튼의 색상을 변경
+## 활성화 된 버튼의 색상 변경
 ```java
+public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
     public void onBindViewHolder(@NonNull CustomAdapter.CustomViewHolder holder, int position) {
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -46,4 +47,35 @@
             holder.itemView.setBackgroundResource(R.drawable.btn_custom_unclicked);
         }
     }
+}
+```
+
+## 선택된 가구의 값 추출
+```java
+/* CustomAdapter.java
+   Interface 추가 */
+   
+    public interface OnListItemSelectedInterface {
+        void onItemSelected(View v, int position);
+    }
+
+    private OnListItemSelectedInterface mListener;
+
+    public CustomAdapter(ArrayList<CustomData> arrayList, OnListItemSelectedInterface listener) {
+        this.arrayList = arrayList;
+        this.mListener = listener;
+    }
+```
+
+```java
+// CustomActivity.java
+   
+public class CustomActivity extends AppCompatActivity implements CustomAdapter.OnListItemSelectedInterface{
+    ...
+    @Override
+    public void onItemSelected(View v, int position) {
+        CustomAdapter.CustomViewHolder viewHolder = (CustomAdapter.CustomViewHolder)recyclerView.findViewHolderForAdapterPosition(position);
+        furniture = viewHolder.tv_name.getText().toString();
+    }
+}
 ```
