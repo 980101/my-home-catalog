@@ -52,7 +52,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         ViewHolder holder = new ViewHolder(view);
         */
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_funiture, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_furniture, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

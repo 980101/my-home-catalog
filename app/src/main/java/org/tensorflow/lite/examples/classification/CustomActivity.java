@@ -2,19 +2,16 @@ package org.tensorflow.lite.examples.classification;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class CustomActivity extends AppCompatActivity implements CustomAdapter.OnListItemSelectedInterface{
-
     private ArrayList<CustomData> arrayList;
     private CustomAdapter customAdapter;
     private RecyclerView recyclerView;
@@ -39,6 +36,10 @@ public class CustomActivity extends AppCompatActivity implements CustomAdapter.O
         arrayList.add(new CustomData(R.drawable.ic_sofa, "sofa"));
         arrayList.add(new CustomData(R.drawable.ic_dresser, "dresser"));
         arrayList.add(new CustomData(R.drawable.ic_table, "table"));
+
+        // 아이템 사이의 margin 설정
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
         customAdapter = new CustomAdapter(arrayList, this);
         recyclerView.setAdapter(customAdapter);

@@ -19,12 +19,6 @@
     android:layout_height="match_parent"
     android:background="#00000000">
 
-    <Button
-        android:id="@+id/btn_capture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="촬영하기"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,10 +33,18 @@
             android:layout_height="match_parent"
             android:background="@android:color/black"
             tools:context="org.tensorflow.lite.examples.classification.CameraActivity" />
-
     </RelativeLayout>
 
-    <include
-        android:id="@+id/bottom_sheet_layout"
-        layout="@layout/tfe_ic_layout_bottom_sheet" />
+    <Button
+        android:id="@+id/btn_capture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
+        android:layout_gravity="bottom"
+        android:text="촬영하기"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:background="@color/orange"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

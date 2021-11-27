@@ -1,8 +1,11 @@
 package org.tensorflow.lite.examples.classification;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +41,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     @Override
     public CustomAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_button, parent, false);
+
+        // 아이템의 크기를 동적으로 변경
+        int width = parent.getMeasuredWidth() / 2;
+        int height = parent.getMeasuredHeight() / 3;
+        view.setMinimumWidth(width);
+        view.setMinimumHeight(height);
+
         CustomViewHolder holder = new CustomViewHolder(view);
 
         return holder;
@@ -60,6 +70,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                 notifyDataSetChanged();
             }
         });
+
         if (itemIdx == holder.getPosition()) {
             holder.itemView.setBackgroundResource(R.drawable.btn_custom_clicked);;
         } else {

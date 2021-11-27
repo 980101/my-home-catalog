@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/btn_custom_unclicked">
@@ -19,6 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="모든" />
+        android:text="모든"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
 
 </LinearLayout>

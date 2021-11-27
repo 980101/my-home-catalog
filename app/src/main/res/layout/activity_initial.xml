@@ -6,28 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".InitialActivity">
 
-    <TextView
-        android:id="@+id/tv_initial_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="My Home Catalog"
-        android:textSize="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/btn_custom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="맞춤 가구 둘러보기"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_initial_title" />
+        <TextView
+            android:id="@+id/tv_initial_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="My Home\n Catalog"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:lineSpacingExtra="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="바로 시작"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_custom" />
+        <Button
+            android:id="@+id/btn_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="30dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="30dp"
+            android:text="맞춤 가구 둘러보기"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_dark"
+            android:background="@drawable/btn_initial_unclicked"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_initial_title" />
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="바로 시작"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/gray_dark"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_custom" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

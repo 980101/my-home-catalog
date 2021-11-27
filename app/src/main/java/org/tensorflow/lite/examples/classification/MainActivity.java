@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference styleList;
     private View pressedStyleBtn;
     private View pressedTypeBtn;
+    private Button prevBtn, presBtn;
     private String pickedStyle, pickedType;
 
     @Override
@@ -66,12 +68,12 @@ public class MainActivity extends AppCompatActivity {
         chgTitle(tv_title, pickedStyle);
 
         // 초기화면 세팅
-        if (pickedStyle != null && pickedStyle != "all") {
+        if (pickedStyle != null && !pickedStyle.equals("all")) {
             Arrays.fill(styles, null);
             styles[0] = pickedStyle;
         }
 
-        if (pickedType != null && pickedType != "all") {
+        if (pickedType != null && !pickedType.equals("all")) {
             Arrays.fill(types, null);
             types[0] = pickedType;
         }
@@ -81,8 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             } else {
                 styleList = databaseReference.child(styles[i]);
+                System.out.println(styles[i]);
+                System.out.println(styles[i]);
 
                 for (int j = 0; j < types.length; j++) {
+                    System.out.println(types[j]);
+                    System.out.println(types[j]);
+
                     if (types[j] == null) {
                         break;
                     } else {
@@ -117,11 +124,18 @@ public class MainActivity extends AppCompatActivity {
                 if (pressedStyleBtn == null) {
                     pressedStyleBtn = v;
                 } else if (pressedStyleBtn != v) {
-                    pressedStyleBtn.setBackground(getDrawable(R.drawable.btn_style_unclicked));
+                    // 이전 버튼 설정
+                    pressedStyleBtn.setBackground(getDrawable(R.drawable.btn_style_unclicked)); // 배경색상
+                    prevBtn = findViewById(pressedStyleBtn.getId()); // 버튼 텍스트 색상
+                    prevBtn.setTextColor(getResources().getColor(R.color.gray_dark));
+
                     pressedStyleBtn = v;
                 }
 
+                // 현재 (선택된 ) 버튼 설정
                 v.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                presBtn = findViewById(pressedStyleBtn.getId());
+                presBtn.setTextColor(getResources().getColor(R.color.white));
 
                 Arrays.fill(types, null);
                 types[0] = "bed";
@@ -212,7 +226,8 @@ public class MainActivity extends AppCompatActivity {
         Button btn_style_zen = findViewById(R.id.btn_style_zen);
         btn_style_zen.setOnClickListener(onClickListnerByStyle);
 
-        // 초기 스타일의 버튼 배경 설정
+        // 초기 화면의 스타일 버튼
+        // 배경색상 설정
         switch (pickedStyle) {
             case "all" :
                 btn_style_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
@@ -240,6 +255,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        // 버튼 텍스트 설정
+        presBtn = findViewById(pressedStyleBtn.getId());
+        presBtn.setTextColor(getResources().getColor(R.color.white));
+
         // 이벤트 리스너 : 가구 버튼
         pressedTypeBtn = null;
 
@@ -249,31 +268,31 @@ public class MainActivity extends AppCompatActivity {
                 if (pressedTypeBtn == null) {
                     pressedTypeBtn = v;
                 } else if (pressedTypeBtn != v) {
-                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_style_unclicked));
+                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_unclicked));
                     pressedTypeBtn = v;
                 }
 
-                pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_clicked));
 
                 Arrays.fill(types, null);
 
                 switch (v.getId()) {
-                    case R.id.btn_type_chair:
+                    case R.id.type_chair :
                         types[0] = "chair";
                         break;
-                    case R.id.btn_type_bed:
+                    case R.id.type_bed:
                         types[0] = "bed";
                         break;
-                    case R.id.btn_type_sofa:
+                    case R.id.type_sofa:
                         types[0] = "sofa";
                         break;
-                    case R.id.btn_type_dresser:
+                    case R.id.type_dresser:
                         types[0] = "dresser";
                         break;
-                    case R.id.btn_type_table:
+                    case R.id.type_table:
                         types[0] = "table";
                         break;
-                    case R.id.btn_type_all:
+                    case R.id.type_all:
                         types[0] = "chair";
                         types[1] = "bed";
                         types[2] = "sofa";
@@ -320,44 +339,44 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        Button btn_type_all = findViewById(R.id.btn_type_all);
-        btn_type_all.setOnClickListener(onClickListenerByType);
-        Button btn_type_chair = findViewById(R.id.btn_type_chair);
-        btn_type_chair.setOnClickListener(onClickListenerByType);
-        Button btn_type_bed = findViewById(R.id.btn_type_bed);
-        btn_type_bed.setOnClickListener(onClickListenerByType);
-        Button btn_type_sofa = findViewById(R.id.btn_type_sofa);
-        btn_type_sofa.setOnClickListener(onClickListenerByType);
-        Button btn_type_dresser = findViewById(R.id.btn_type_dresser);
-        btn_type_dresser.setOnClickListener(onClickListenerByType);
-        Button btn_type_table = findViewById(R.id.btn_type_table);
-        btn_type_table.setOnClickListener(onClickListenerByType);
+        LinearLayout type_all = findViewById(R.id.type_all);
+        type_all.setOnClickListener(onClickListenerByType);
+        LinearLayout type_chair = findViewById(R.id.type_chair);
+        type_chair.setOnClickListener(onClickListenerByType);
+        LinearLayout type_bed = findViewById(R.id.type_bed);
+        type_bed.setOnClickListener(onClickListenerByType);
+        LinearLayout type_sofa = findViewById(R.id.type_sofa);
+        type_sofa.setOnClickListener(onClickListenerByType);
+        LinearLayout type_dresser = findViewById(R.id.type_dresser);
+        type_dresser.setOnClickListener(onClickListenerByType);
+        LinearLayout type_table = findViewById(R.id.type_table);
+        type_table.setOnClickListener(onClickListenerByType);
 
         // 초기 가구의 버튼 배경 설정
         switch (pickedType) {
+            case "all" :
+                type_all.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+                pressedTypeBtn = type_all;
+                break;
             case "chair" :
-                btn_type_chair.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedTypeBtn = btn_type_chair;
+                type_chair.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+                pressedTypeBtn = type_chair;
                 break;
             case "bed" :
-                btn_type_bed.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedTypeBtn = btn_type_bed;
+                type_bed.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+                pressedTypeBtn = type_bed;
                 break;
             case "sofa" :
-                btn_type_sofa.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedTypeBtn = btn_type_sofa;
+                type_sofa.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+                pressedTypeBtn = type_sofa;
                 break;
             case "dresser" :
-                btn_type_dresser.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedTypeBtn = btn_type_dresser;
+                type_dresser.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+                pressedTypeBtn = type_dresser;
                 break;
             case "table" :
-                btn_type_table.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedTypeBtn = btn_type_table;
-                break;
-            default :
-                btn_type_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedTypeBtn = btn_type_all;
+                type_table.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+                pressedTypeBtn = type_table;
                 break;
         }
 

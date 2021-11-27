@@ -75,7 +75,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private int yRowStride;
   private Runnable postInferenceCallback;
   private Runnable imageConverter;
-  private TextView recognitionStyle;
+  private String recognitionStyle;
 
   private Device device = Device.CPU;
   private int numThreads = -1;
@@ -94,20 +94,17 @@ public abstract class CameraActivity extends AppCompatActivity
       requestPermission();
     }
 
-    // 분류된 스타일
-    recognitionStyle = findViewById(R.id.result_value);
-
     // 캡쳐하기
     Button btn_capture = findViewById(R.id.btn_capture);
     btn_capture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (!TextUtils.isEmpty(recognitionStyle.getText())) {
+        if (!TextUtils.isEmpty(recognitionStyle)) {
           // Intent 데이터 받아오기
           String furniture = getIntent().getStringExtra("type");
 
           Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-          intent.putExtra("style", recognitionStyle.getText().toString());
+          intent.putExtra("style", recognitionStyle);
           intent.putExtra("type", furniture);
           startActivity(intent);
         }
@@ -444,7 +441,7 @@ public abstract class CameraActivity extends AppCompatActivity
       if (recognition != null) {
         if (recognition.getConfidence() != null) {
           if (recognition.getConfidence() >= 0.9) {
-            recognitionStyle.setText(recognition.getTitle());
+            recognitionStyle = recognition.getTitle();
           }
         }
       }
