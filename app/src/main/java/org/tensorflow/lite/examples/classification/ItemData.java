@@ -4,6 +4,7 @@ public class ItemData {
     private String image;
     private String name;
     private String price;
+    private String link;
 
     // 생성자
     public ItemData(){}
@@ -20,6 +21,10 @@ public class ItemData {
         this.price = price;
     }
 
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public String getImage() {
         return image;
     }
@@ -30,5 +35,9 @@ public class ItemData {
 
     public String getPrice() {
         return price;
+    }
+
+    public String getLink() {
+        return link;
     }
 }

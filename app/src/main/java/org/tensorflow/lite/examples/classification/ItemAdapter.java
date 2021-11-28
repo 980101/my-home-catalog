@@ -1,6 +1,7 @@
 package org.tensorflow.lite.examples.classification;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 .into(viewHolder.iv_photo);
         viewHolder.tv_name.setText(data.getName());
         viewHolder.tv_price.setText(data.getPrice());
+
+        viewHolder.itemView.setTag(position);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToDetail = new Intent(context.getApplicationContext(), DetailActivity.class);
+                intentToDetail.putExtra("image", data.getImage());
+                intentToDetail.putExtra("name", data.getName());
+                intentToDetail.putExtra("price", data.getPrice());
+                intentToDetail.putExtra("link", data.getLink());
+                context.startActivity(intentToDetail);
+            }
+        });
     }
 
     // getItemCount() - 전체 데이터 개수 리턴
