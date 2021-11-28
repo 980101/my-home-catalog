@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,13 @@ public class CustomActivity extends AppCompatActivity implements CustomAdapter.O
             public void onClick(View v) {
                 Intent intentToCamera = new Intent(getApplicationContext(), ClassifierActivity.class);
                 intentToCamera.putExtra("type", furniture);
-                startActivity(intentToCamera);
+
+                // 가구 선택 여부를 확인
+                if (furniture == null) {
+                    Toast.makeText(getApplicationContext(), "가구를 선택해주세요!", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(intentToCamera);
+                }
             }
         });
     }
