@@ -1,4 +1,4 @@
-# HouseServer
+# My Home Catalog
 이미지 분류 기술을 사용하여 인테리어에 맞는 구매물품을 추천하는 안드로이드 앱
 
 1. 카메라를 통해 인테리어 스타일 파악
@@ -17,7 +17,7 @@
 ## Screen Shots 📷
 ◻ 초기 화면
 
-<img src="https://user-images.githubusercontent.com/47620950/135584614-2cfb5be8-224f-47ef-a161-248679602c0c.png" width="314" height="536" />
+<img src="https://user-images.githubusercontent.com/47620950/144024087-7797fd8b-7526-45c8-9133-4bcf9c367468.png" width="314" height="536" />
 
 ◻ 맞춤 기능 사용 화면
 
