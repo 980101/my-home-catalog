@@ -10,3 +10,9 @@
 
 ## Intent 적용
 <img src="https://user-images.githubusercontent.com/47620950/144253975-4f2bb768-5e5b-4f90-bc95-1032ddff8888.png" width="400" />
+
+## 데이터 저장할 방법
+1. Shared Preferences : 키-값 쌍으로 데이터를 저장한다. 비교적 적은 데이터를 다룰 때 사용한다.
+2. JSON file : JSON 파일을 앱에 저장하여 데이터를 사용한다. 1번이 방법보다 복잡한 데이터를 다룰 수 있다.
+
+✔ 하나의 데이터에 이미지 URL, 이름, 가격을 저장하므로 2번 방법을 선택
