@@ -11,4 +11,4 @@ Firebase의 실시간 데이터베이스(DB)으로 사용자에게 제공되는 
 (Firebase Example에 적용한 결과 스크린샷 첨부)
 
 ### RecyclerView 적용
-House server 프로젝트에 적용하자 !
+My Home Catalog 프로젝트에 적용하자 !
