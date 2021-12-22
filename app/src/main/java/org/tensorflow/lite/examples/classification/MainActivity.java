@@ -1,15 +1,10 @@
 package org.tensorflow.lite.examples.classification;
 
-import static java.sql.DriverManager.println;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ClipData;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,8 +17,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,13 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             } else {
                 styleList = databaseReference.child(styles[i]);
-                System.out.println(styles[i]);
-                System.out.println(styles[i]);
 
                 for (int j = 0; j < types.length; j++) {
-                    System.out.println(types[j]);
-                    System.out.println(types[j]);
-
                     if (types[j] == null) {
                         break;
                     } else {

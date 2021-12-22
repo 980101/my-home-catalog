@@ -1,7 +1,6 @@
 package org.tensorflow.lite.examples.classification;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -40,7 +43,7 @@ public class DetailActivity extends AppCompatActivity {
         tv_price.setText(price);
     }
 
-    // '이동' 버튼의 이벤트 함수
+    // '구매하기' 버튼의 이벤트 함수
     public void goToBuy (View view) {
         goToUrl(link);
     }
@@ -49,5 +52,25 @@ public class DetailActivity extends AppCompatActivity {
         Uri uriUrl = Uri.parse(url);
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         startActivity(launchBrowser);
+    }
+
+    // '저장' 버튼의 이벤트 함수
+    public void saveItem (View view) {
+
+        // 저장할 데이터 설정
+        JSONObject jsonobject =  new JSONObject();
+
+        try {
+            jsonobject.put("Name", name);
+            jsonobject.put("Price", price);
+        } catch (JSONException e) {
+            System.out.println("객체 생성 실패");
+            System.out.println("객체 생성 실패");
+
+            e.printStackTrace();
+        }
+
+        MyJson myJson = new MyJson();
+        myJson.saveData(this, jsonobject);
     }
 }
