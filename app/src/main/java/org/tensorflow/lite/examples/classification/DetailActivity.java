@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,19 +59,16 @@ public class DetailActivity extends AppCompatActivity {
     public void saveItem (View view) {
 
         // 저장할 데이터 설정
-        JSONObject jsonobject =  new JSONObject();
+        JSONObject jsonObject =  new JSONObject();
 
         try {
-            jsonobject.put("Name", name);
-            jsonobject.put("Price", price);
+            jsonObject.put("Name", name);
+            jsonObject.put("Price", price);
         } catch (JSONException e) {
-            System.out.println("객체 생성 실패");
-            System.out.println("객체 생성 실패");
-
-            e.printStackTrace();
+            Log.e("TAG", "Error: " + e.getLocalizedMessage());
         }
 
-        MyJson myJson = new MyJson();
-        myJson.saveData(this, jsonobject);
+        MyJson item = new MyJson();
+        item.saveData(this, jsonObject);
     }
 }
