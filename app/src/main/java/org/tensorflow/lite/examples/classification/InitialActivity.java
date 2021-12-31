@@ -14,6 +14,16 @@ public class InitialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
 
+        // 즐겨찾기
+        Button btn_favorites = findViewById(R.id.btn_favorites);
+        btn_favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToFavorites = new Intent(getApplicationContext(), FavoritesActivity.class);
+                startActivity(intentToFavorites);
+            }
+        });
+
         // 바로 가기
         Button btn_start = findViewById(R.id.btn_start);
         btn_start.setOnClickListener(new View.OnClickListener() {

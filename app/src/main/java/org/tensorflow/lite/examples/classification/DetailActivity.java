@@ -62,8 +62,10 @@ public class DetailActivity extends AppCompatActivity {
         JSONObject jsonObject =  new JSONObject();
 
         try {
+            jsonObject.put("Image", image);
             jsonObject.put("Name", name);
             jsonObject.put("Price", price);
+            jsonObject.put("Link", link);
         } catch (JSONException e) {
             Log.e("TAG", "Error: " + e.getLocalizedMessage());
         }

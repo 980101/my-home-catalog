@@ -19,12 +19,5 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
         outRect.right = space;
         outRect.top = space;
         outRect.bottom = space;
-
-//        첫 번째 아이템만 top margin을 주는 코드
-//        if (parent.getChildLayoutPosition(view) == 0) {
-//            outRect.top = space;
-//        } else {
-//            outRect.top = 0;
-//        }
     }
 }
