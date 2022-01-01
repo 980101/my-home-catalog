@@ -7,7 +7,16 @@ public class ItemData {
     private String link;
 
     // 생성자
-    public ItemData(){}
+    // 기본
+    public ItemData() {}
+
+    // 사용자 지정
+    public ItemData(String image, String name, String price, String link){
+        this.image = image;
+        this.name = name;
+        this.price = price;
+        this.link = link;
+    }
 
     public void setImage(String image) {
         this.image = image;
