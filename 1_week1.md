@@ -17,7 +17,7 @@ adapter에 interface를 생성하여, 클릭된 아이템의 position을 전달�
     }
     
     // '선택' 버튼 클릭 시
-        @Override
+     @Override
     public void onBindViewHolder(FavoritesAdapter.ViewHolder holder, int position) {
     
         ...
@@ -26,7 +26,7 @@ adapter에 interface를 생성하여, 클릭된 아이템의 position을 전달�
             @Override
             public void onClick(View v) {
                 int itemIdx = holder.getAbsoluteAdapterPosition();
-                mLongListener.onItemSelected(v, itemIdx);
+                mListener.onItemSelected(v, itemIdx);
                 notifyDataSetChanged();
             }
         });
@@ -62,4 +62,5 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesAda
 ```
 
 ✔ 액티비티 리프레시 하는 법 → stack overflow 참고 [here](https://stackoverflow.com/questions/3053761/reload-activity-in-android)
+
 ✔ Toast 설정 시, context 설정 (getApplicationContext() VS this) 에 대한 궁금증이 생김 → stack overflow 참고 [here](https://stackoverflow.com/questions/22966601/what-is-different-between-mainactivity-this-vs-getapplicationcontext)
