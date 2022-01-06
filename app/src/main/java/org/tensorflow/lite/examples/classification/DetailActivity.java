@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -18,12 +20,17 @@ import org.json.JSONObject;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private Button btn_save;
     private String image, name, price, link;
+    private Boolean isExisted;
+    private MyJson item = new MyJson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        btn_save = findViewById(R.id.btn_detail);
 
         // Intent 데이터 받아오기
         image = getIntent().getStringExtra("image");
@@ -42,6 +49,13 @@ public class DetailActivity extends AppCompatActivity {
         // 가격 설정
         TextView tv_price = findViewById(R.id.tv_detail_price);
         tv_price.setText(price);
+
+        // 즐겨찾기 여부 체크
+        isExisted = item.checkData(this, name);
+
+        if (isExisted) {
+            btn_save.setBackgroundResource(R.drawable.ic_save_fill);
+        }
     }
 
     // '구매하기' 버튼의 이벤트 함수
@@ -58,19 +72,25 @@ public class DetailActivity extends AppCompatActivity {
     // '저장' 버튼의 이벤트 함수
     public void saveItem (View view) {
 
-        // 저장할 데이터 설정
-        JSONObject jsonObject =  new JSONObject();
+        view.setBackgroundResource(R.drawable.ic_save_fill);
 
-        try {
-            jsonObject.put("Image", image);
-            jsonObject.put("Name", name);
-            jsonObject.put("Price", price);
-            jsonObject.put("Link", link);
-        } catch (JSONException e) {
-            Log.e("TAG", "Error: " + e.getLocalizedMessage());
+        if (isExisted) {
+            Toast.makeText(this, "이미 존재하는 아이템입니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            // 저장할 데이터 설정
+            JSONObject jsonObject =  new JSONObject();
+
+            try {
+                jsonObject.put("Image", image);
+                jsonObject.put("Name", name);
+                jsonObject.put("Price", price);
+                jsonObject.put("Link", link);
+            } catch (JSONException e) {
+                Log.e("TAG", "Error: " + e.getLocalizedMessage());
+            }
+
+            item.saveData(this, jsonObject);
+            isExisted = true;
         }
-
-        MyJson item = new MyJson();
-        item.saveData(this, jsonObject);
     }
 }

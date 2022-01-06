@@ -18,6 +18,30 @@ public class MyJson {
 
     static String fileName = "savedItem.json";
 
+    public static boolean checkData(Context context, String name) {
+
+        // 기존의 데이터를 가져오기
+        String prev = getData(context);
+
+        if (prev == null) {
+            return false;
+        } else {
+            try {
+                JSONArray prevArray = new JSONArray(prev);
+
+                for (int i = 0; i < prevArray.length(); i++) {
+                    JSONObject object = prevArray.getJSONObject(i);
+                    String prevName = object.getString("Name"); // 확인할 데이터의 Name 값
+
+                    if (prevName.equals(name)) return true;
+                }
+            } catch (JSONException e) {
+                Log.e("TAG", "Error in Loading: " + e.getLocalizedMessage());
+            }
+        }
+        return false;
+    }
+
     public static void saveData(Context context, JSONObject mJsonResponse) {
         boolean isExist = false;
 
@@ -36,16 +60,9 @@ public class MyJson {
                 // 기존 데이터를 Json Array 형태로 변형
                 prevArray = new JSONArray(prev);
 
-                // 중복 체크
+                // 중복체크
                 String name = mJsonResponse.getString("Name");  // 저장할 데이터의 Name 값
-
-                for (int i = 0; i < prevArray.length(); i++) {
-                    JSONObject object = prevArray.getJSONObject(i);
-                    String prevName = object.getString("Name"); // 저장된 데이터의 Name 값
-
-                    if (prevName.equals(name)) isExist = true;
-                }
-
+                isExist = checkData(context, name);
             } catch (JSONException e) {
                 Log.e("TAG", "Error in Comparing: " + e.getLocalizedMessage());
             }
