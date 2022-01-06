@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,11 +20,18 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private ArrayList<ItemData> arrayList;
     private Context context;
 
+    public interface OnListItemSelectedInterface {
+        void onItemSelected(View v, int position);
+    }
+
+    private OnListItemSelectedInterface mListener;
+
     // 아이템 뷰를 저장하는 뷰홀더 클래스
-    public static class ViewHolder extends  RecyclerView.ViewHolder {
-        public final ImageView iv_photo;
-        public final TextView tv_name;
-        public final TextView tv_price;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        protected ImageView iv_photo;
+        protected TextView tv_name;
+        protected TextView tv_price;
+        protected Button btn_item;
 
         public ViewHolder(View view) {
             super(view);
@@ -32,12 +40,14 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             iv_photo = view.findViewById(R.id.iv_item_favorites);
             tv_name = view.findViewById(R.id.tv_item_favorites_name);
             tv_price = view.findViewById(R.id.tv_item_favorites_price);
+            btn_item = view.findViewById(R.id.btn_item_favorites);
         }
     }
 
-    public FavoritesAdapter(ArrayList<ItemData> arrayList, Context context) {
+    public FavoritesAdapter(ArrayList<ItemData> arrayList, Context context, OnListItemSelectedInterface onListItemSelectedInterface) {
         this.arrayList = arrayList;
         this.context = context;
+        this.mListener = onListItemSelectedInterface;
     }
 
     @Override
@@ -67,6 +77,15 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 intentToDetail.putExtra("price", data.getPrice());
                 intentToDetail.putExtra("link", data.getLink());
                 context.startActivity(intentToDetail);
+            }
+        });
+
+        holder.btn_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int itemIdx = holder.getAbsoluteAdapterPosition();
+                mListener.onItemSelected(v, itemIdx);
+                notifyDataSetChanged();
             }
         });
     }

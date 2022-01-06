@@ -1,25 +1,20 @@
 package org.tensorflow.lite.examples.classification;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
+
+    // 리사이클러뷰의 아이템을 담는 배열
+    private ArrayList<CustomData> arrayList;
 
     // 선택된 아이템의 인덱스 추출
     public interface OnListItemSelectedInterface {
@@ -28,8 +23,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     private OnListItemSelectedInterface mListener;
 
-    // 리사이클러뷰의 아이템을 담는 배열
-    private ArrayList<CustomData> arrayList;
+    public class CustomViewHolder extends RecyclerView.ViewHolder {
+        protected ImageView iv_icon;
+        protected TextView tv_name;
+
+        public CustomViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            this.iv_icon = itemView.findViewById(R.id.iv_custom_item);
+            this.tv_name = itemView.findViewById(R.id.tv_custom_item);
+        }
+    }
 
     public CustomAdapter(ArrayList<CustomData> arrayList, OnListItemSelectedInterface listener) {
         this.arrayList = arrayList;
@@ -81,18 +85,5 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     @Override
     public int getItemCount() {
         return (null != arrayList ? arrayList.size() : 0);
-    }
-
-    // 생성한 클래스
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView iv_icon;
-        protected TextView tv_name;
-
-        public CustomViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            this.iv_icon = itemView.findViewById(R.id.iv_custom_item);
-            this.tv_name = itemView.findViewById(R.id.tv_custom_item);
-        }
     }
 }

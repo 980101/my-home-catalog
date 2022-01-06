@@ -89,4 +89,34 @@ public class MyJson {
             return null;
         }
     }
+
+    public static void deleteData(Context context, int position) {
+        // 기존 데이터를 가져오기
+        String saved = getData(context);
+
+        JSONArray newArray = new JSONArray();
+
+        try {
+            JSONArray prevArray = new JSONArray(saved);
+            int len = prevArray.length();
+
+            if (prevArray != null) {
+                for (int i = 0; i < len; i++) {
+                    if (i != position) newArray.put(prevArray.get(i));
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("TAG", "Error in Deleting: " + e.getLocalizedMessage());
+        }
+
+        // 삭제한 결과(newArray)를 Json File(savedItem.json)에 쓰기
+        try {
+            FileWriter fw = new FileWriter(context.getFilesDir().getPath() + "/" + fileName);
+            fw.write(newArray.toString());
+            fw.flush();
+            fw.close();
+        } catch (IOException e) {
+            Log.e("TAG", "Error in Writing: " + e.getLocalizedMessage());
+        }
+    }
 }

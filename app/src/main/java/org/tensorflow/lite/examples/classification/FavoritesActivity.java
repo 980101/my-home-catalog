@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,11 +15,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class FavoritesActivity extends AppCompatActivity {
+public class FavoritesActivity extends AppCompatActivity implements FavoritesAdapter.OnListItemSelectedInterface {
 
     private RecyclerView recyclerView;
     private ArrayList<ItemData> arrayList;
     private RecyclerView.Adapter adapter;
+    private int selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,27 @@ public class FavoritesActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new FavoritesAdapter(arrayList, this);
+        adapter = new FavoritesAdapter(arrayList, this, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    public void deleteItem(View view) {
+
+        if (arrayList.size() != 0 && selected > -1) {    // 아이템이 없는 경우, 예외처리
+            MyJson myJson = new MyJson();
+            myJson.deleteData(this, selected);
+
+            arrayList.remove(selected);
+            adapter.notifyItemRemoved(selected);
+        } else {
+            Toast.makeText(getApplicationContext(), "즐겨찾기한 항목이 없습니다 !", Toast.LENGTH_SHORT).show();
+        }
+
+        selected = -1;
+    }
+
+    @Override
+    public void onItemSelected(View v, int position) {
+        selected = position;
     }
 }
