@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,12 +33,18 @@ public class MainActivity extends AppCompatActivity {
     private View pressedStyleBtn;
     private View pressedTypeBtn;
     private Button prevBtn, presBtn;
+    private Button btn_custom, btn_initial, btn_favorites;
     private String pickedStyle, pickedType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // 버튼 설정
+        btn_custom = findViewById(R.id.btn_bottom_custom);
+        btn_initial = findViewById(R.id.btn_bottom_initial);
+        btn_favorites = findViewById(R.id.btn_item_favorites);
 
         // Intent 데이터 받아오기
         pickedStyle = getIntent().getStringExtra("style") != null ? getIntent().getStringExtra("style") : "all";
@@ -120,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     pressedStyleBtn = v;
                 }
 
-                // 현재 (선택된 ) 버튼 설정
+                // 현재 (선택된) 버튼 설정
                 v.setBackground(getDrawable(R.drawable.btn_style_clicked));
                 presBtn = findViewById(pressedStyleBtn.getId());
                 presBtn.setTextColor(getResources().getColor(R.color.white));
@@ -400,5 +407,24 @@ public class MainActivity extends AppCompatActivity {
                 title.setText("젠");
                 break;
         }
+    }
+
+    // 하단의 buttom 클릭 이벤트 설정
+    // 가구 지정 화면으로 이동
+    public void goCustom(View v) {
+        Intent setIntent = new Intent(getApplicationContext(), CustomActivity.class);
+        startActivity(setIntent);
+    }
+
+    // 홈 화면으로 이동
+    public void goInitial(View v) {
+        Intent setIntent = new Intent(getApplicationContext(), InitialActivity.class);
+        startActivity(setIntent);
+    }
+
+    // 즐겨찾기 화면으로 이동
+    public void goFavorites(View v) {
+        Intent setIntent = new Intent(getApplicationContext(), FavoritesActivity.class);
+        startActivity(setIntent);
     }
 }
