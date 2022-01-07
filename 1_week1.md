@@ -64,3 +64,16 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesAda
 ✔ 액티비티 리프레시 하는 법 → stack overflow 참고 [here](https://stackoverflow.com/questions/3053761/reload-activity-in-android)
 
 ✔ Toast 설정 시, context 설정 (getApplicationContext() VS this) 에 대한 궁금증이 생김 → stack overflow 참고 [here](https://stackoverflow.com/questions/22966601/what-is-different-between-mainactivity-this-vs-getapplicationcontext)
+
+# 카메라 화면의 상단에 히스토리 출력
+: 사용자가 이전에 사용한 인테리어 스타일을 표시한다.
+
+💡 스타일은 총 5개이므로 배열을 사용하여 저장한다.
+
+1️⃣ 값이 true인 키(스타일명)를 출력
+
+2️⃣ '촬영하기' 버튼을 누르면, 감지한 스타일명을 키, 값을 true로 하여 추가
+
+※ 이때 동일한 키(스타일명)이 있을 경우 삭제 후, 추가
+
+3️⃣ 메인 화면으로 이동
