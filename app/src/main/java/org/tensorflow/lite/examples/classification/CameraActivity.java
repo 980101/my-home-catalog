@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -44,11 +45,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.UiThread;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.tensorflow.lite.examples.classification.env.ImageUtils;
 import org.tensorflow.lite.examples.classification.env.Logger;
 import org.tensorflow.lite.examples.classification.tflite.Classifier.Device;
@@ -80,12 +86,13 @@ public abstract class CameraActivity extends AppCompatActivity
   private Device device = Device.CPU;
   private int numThreads = -1;
 
+  private String shared = "file";
+
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
     super.onCreate(null);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
     setContentView(R.layout.tfe_ic_activity_camera);
 
     if (hasPermission()) {
@@ -94,12 +101,30 @@ public abstract class CameraActivity extends AppCompatActivity
       requestPermission();
     }
 
+    // SharedPreferences 객체 생성
+    SharedPreferences mPreferences = getSharedPreferences(shared, MODE_PRIVATE);
+
     // 캡쳐하기
     Button btn_capture = findViewById(R.id.btn_capture);
     btn_capture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         if (!TextUtils.isEmpty(recognitionStyle)) {
+
+          // 히스토리 저장
+          SharedPreferences.Editor editor = mPreferences.edit();
+
+          // 저장된 값이 있으면 삭제
+          if (mPreferences.contains(recognitionStyle)) {
+            editor.remove(recognitionStyle);
+            editor.commit();
+          }
+
+          // 파일에 저장될 형태로 변형
+          editor.putString(recognitionStyle, recognitionStyle); // (별명, 값)
+          // 값 저장
+          editor.apply();
+
           // Intent 데이터 받아오기
           String furniture = getIntent().getStringExtra("type");
 
@@ -110,6 +135,21 @@ public abstract class CameraActivity extends AppCompatActivity
         }
       }
     });
+
+    // 히스토리 리스트에 저장
+    ArrayList<String> list = new ArrayList<String>();
+
+    Map<String, ?> allValue = mPreferences.getAll();
+
+    for (Map.Entry<String, ?> entry : allValue.entrySet()) {
+      list.add(mPreferences.getString(entry.getKey(), "no value"));
+    }
+
+    RecyclerView recyclerView = findViewById(R.id.rv_history);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+    HistoryAdapter adapter = new HistoryAdapter(list);
+    recyclerView.setAdapter(adapter);
   }
 
   protected int[] getRgbBytes() {
@@ -264,6 +304,7 @@ public abstract class CameraActivity extends AppCompatActivity
     }
 
     super.onPause();
+
   }
 
   @Override

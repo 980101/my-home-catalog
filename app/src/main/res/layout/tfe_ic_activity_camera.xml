@@ -35,6 +35,12 @@
             tools:context="org.tensorflow.lite.examples.classification.CameraActivity" />
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp" />
+
     <Button
         android:id="@+id/btn_capture"
         android:layout_width="match_parent"
