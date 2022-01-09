@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,12 +18,16 @@ public class CustomActivity extends AppCompatActivity implements CustomAdapter.O
     private CustomAdapter customAdapter;
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
-    private String furniture;
+    public String furniture;
+
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom);
+
+        mContext = this;
 
         recyclerView = findViewById(R.id.rv_custom);
         gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);

@@ -104,25 +104,24 @@ public abstract class CameraActivity extends AppCompatActivity
     // SharedPreferences 객체 생성
     SharedPreferences mPreferences = getSharedPreferences(shared, MODE_PRIVATE);
 
-    // 캡쳐하기
+    // 히스토리 리스트 아이템 클릭 이벤트
+
+    // '촬영하기' 버튼 클릭 이벤트
     Button btn_capture = findViewById(R.id.btn_capture);
     btn_capture.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         if (!TextUtils.isEmpty(recognitionStyle)) {
 
-          // 히스토리 저장
+          // 히스토리 리스트 : 저장
           SharedPreferences.Editor editor = mPreferences.edit();
 
-          // 저장된 값이 있으면 삭제
-          if (mPreferences.contains(recognitionStyle)) {
+          if (mPreferences.contains(recognitionStyle)) {  // 저장된 값이 있으면 삭제
             editor.remove(recognitionStyle);
             editor.commit();
           }
 
-          // 파일에 저장될 형태로 변형
-          editor.putString(recognitionStyle, recognitionStyle); // (별명, 값)
-          // 값 저장
+          editor.putString(recognitionStyle, recognitionStyle); // 파일에 저장될 형태 (별명, 값)
           editor.apply();
 
           // Intent 데이터 받아오기
@@ -136,11 +135,10 @@ public abstract class CameraActivity extends AppCompatActivity
       }
     });
 
-    // 히스토리 리스트에 저장
     ArrayList<String> list = new ArrayList<String>();
 
+    // 히스토리 리스트 : 데이터 가공 및 출력
     Map<String, ?> allValue = mPreferences.getAll();
-
     for (Map.Entry<String, ?> entry : allValue.entrySet()) {
       list.add(mPreferences.getString(entry.getKey(), "no value"));
     }
