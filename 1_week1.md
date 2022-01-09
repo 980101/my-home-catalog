@@ -79,4 +79,6 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesAda
 3️⃣ 아이템을 클릭하면 메인 화면으로 이동
 
 ## 아이템 클릭 이벤트
-CustomActivity의 변수인 type 값을 가져와서, 아이템명과 함께 Intent 한다.
+CustomActivity의 변수인 type 값을 가져와서, 아이템(스타일명)과 함께 MainActivity.class 로 전달한다.
+
+💡 Intent는 Activity와 Activity 간의 전송만 가능하다.
