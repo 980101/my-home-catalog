@@ -86,7 +86,9 @@ public abstract class CameraActivity extends AppCompatActivity
   private Device device = Device.CPU;
   private int numThreads = -1;
 
-  private String shared = "file";
+  String shared = "file";
+  public static Context mContext;
+  public SharedPreferences mPreferences;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -95,6 +97,8 @@ public abstract class CameraActivity extends AppCompatActivity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     setContentView(R.layout.tfe_ic_activity_camera);
 
+    mContext = this;
+
     if (hasPermission()) {
       setFragment();
     } else {
@@ -102,9 +106,7 @@ public abstract class CameraActivity extends AppCompatActivity
     }
 
     // SharedPreferences 객체 생성
-    SharedPreferences mPreferences = getSharedPreferences(shared, MODE_PRIVATE);
-
-    // 히스토리 리스트 아이템 클릭 이벤트
+    mPreferences = getSharedPreferences(shared, MODE_PRIVATE);
 
     // '촬영하기' 버튼 클릭 이벤트
     Button btn_capture = findViewById(R.id.btn_capture);
@@ -145,6 +147,9 @@ public abstract class CameraActivity extends AppCompatActivity
 
     RecyclerView recyclerView = findViewById(R.id.rv_history);
     recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    // 아이템 사이의 margin 설정
+    int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing_small);
+    recyclerView.addItemDecoration(new HistoryItemDecoration(spacingInPixels));
 
     HistoryAdapter adapter = new HistoryAdapter(list);
     recyclerView.setAdapter(adapter);

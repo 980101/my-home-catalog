@@ -69,13 +69,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemIdx = holder.getAdapterPosition();
+                itemIdx = holder.getAbsoluteAdapterPosition();
                 mListener.onItemSelected(v,itemIdx);
                 notifyDataSetChanged();
             }
         });
 
-        if (itemIdx == holder.getPosition()) {
+        if (itemIdx == holder.getAbsoluteAdapterPosition()) {
             holder.itemView.setBackgroundResource(R.drawable.btn_custom_clicked);;
         } else {
             holder.itemView.setBackgroundResource(R.drawable.btn_custom_unclicked);

@@ -44,7 +44,7 @@ public class CustomActivity extends AppCompatActivity implements CustomAdapter.O
         arrayList.add(new CustomData(R.drawable.ic_table, "table"));
 
         // 아이템 사이의 margin 설정
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing_normal);
         recyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
         customAdapter = new CustomAdapter(arrayList, this);

@@ -2,9 +2,11 @@ package org.tensorflow.lite.examples.classification;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,34 +18,57 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     private ArrayList<String> mData = null;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_history;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView tv_history;
+        Button btn_delete;
 
         ViewHolder(View itemView) {
             super(itemView);
 
             tv_history = itemView.findViewById(R.id.tv_item_history);
+            btn_delete = itemView.findViewById(R.id.btn_item_history);
 
             // 클릭 이벤트
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAbsoluteAdapterPosition();
+            itemView.setOnClickListener(this);
 
-                    if (position != RecyclerView.NO_POSITION) {
-                        // style 값 받아오기
-                        String furniture = ((CustomActivity)CustomActivity.mContext).furniture;
-                        String style = tv_history.getText().toString();
-
-                        Intent intentToMain = new Intent(v.getContext(), MainActivity.class);
-                        intentToMain.putExtra("style", style);
-                        intentToMain.putExtra("type", furniture);
-                        v.getContext().startActivity(intentToMain);
-                    }
-
-                }
-            });
+            // 삭제 버튼 이벤트
+            btn_delete.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (v.equals(btn_delete)) {
+                String style = tv_history.getText().toString();
+                removeAt(getAbsoluteAdapterPosition(), style);
+            } else if (v.equals(itemView)) {
+                String style = tv_history.getText().toString();
+                goMain(v, getAbsoluteAdapterPosition(), style);
+            }
+        }
+    }
+
+    public void goMain (View v, int position, String style) {
+        if (position != RecyclerView.NO_POSITION) {
+            // style 값 받아오기
+            String furniture = ((CustomActivity)CustomActivity.mContext).furniture;
+
+            Intent intentToMain = new Intent(v.getContext(), MainActivity.class);
+            intentToMain.putExtra("style", style);
+            intentToMain.putExtra("type", furniture);
+            v.getContext().startActivity(intentToMain);
+        }
+    }
+
+    public void removeAt(int position, String style) {
+        // 데이터 삭제 : View 부분
+        mData.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
+        // 데이터 삭제 : Data 부분
+        SharedPreferences mPreferences = ((CameraActivity)CameraActivity.mContext).mPreferences;
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.remove(style);
+        editor.commit();
     }
 
     HistoryAdapter(ArrayList<String> list) {
