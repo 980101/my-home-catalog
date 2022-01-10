@@ -19,7 +19,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private ArrayList<String> mData = null;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView tv_history;
+        TextView tv_history;
         Button btn_delete;
 
         ViewHolder(View itemView) {
@@ -28,7 +28,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tv_history = itemView.findViewById(R.id.tv_item_history);
             btn_delete = itemView.findViewById(R.id.btn_item_history);
 
-            // 클릭 이벤트
+            // 아이템 버튼 클릭 이벤트
             itemView.setOnClickListener(this);
 
             // 삭제 버튼 이벤트

@@ -1,5 +1,8 @@
 package org.tensorflow.lite.examples.classification;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -419,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
     // 홈 화면으로 이동
     public void goInitial(View v) {
         Intent setIntent = new Intent(getApplicationContext(), InitialActivity.class);
+        setIntent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(setIntent);
     }
 
@@ -426,5 +430,13 @@ public class MainActivity extends AppCompatActivity {
     public void goFavorites(View v) {
         Intent setIntent = new Intent(getApplicationContext(), FavoritesActivity.class);
         startActivity(setIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intentToMain = new Intent(this, InitialActivity.class);
+        startActivity(intentToMain);
     }
 }
