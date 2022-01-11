@@ -35,8 +35,13 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference styleList;
     private View pressedStyleBtn;
     private View pressedTypeBtn;
+    private LinearLayout type_all, type_chair, type_bed
+            , type_sofa, type_dresser, type_table;
+    private TextView tv_title;
     private Button prevBtn, presBtn;
     private Button btn_custom, btn_initial, btn_favorites;
+    private Button btn_style_all, btn_style_natural, btn_style_modern
+            , btn_style_classic, btn_style_industrial, btn_style_zen;
     private String pickedStyle, pickedType;
 
     @Override
@@ -44,33 +49,49 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tv_title = findViewById(R.id.tv_title);
+
+        recyclerView = findViewById(R.id.list_furniture);
+
+        type_all = findViewById(R.id.type_all);
+        type_chair = findViewById(R.id.type_chair);
+        type_bed = findViewById(R.id.type_bed);
+        type_sofa = findViewById(R.id.type_sofa);
+        type_dresser = findViewById(R.id.type_dresser);
+        type_table = findViewById(R.id.type_table);
+
+        btn_style_all = findViewById(R.id.btn_style_all);
+        btn_style_natural = findViewById(R.id.btn_style_natural);
+        btn_style_modern = findViewById(R.id.btn_style_modern);
+        btn_style_classic = findViewById(R.id.btn_style_classic);
+        btn_style_industrial = findViewById(R.id.btn_style_industrial);
+        btn_style_zen = findViewById(R.id.btn_style_zen);
+
         // 버튼 설정
         btn_custom = findViewById(R.id.btn_bottom_custom);
         btn_initial = findViewById(R.id.btn_bottom_initial);
         btn_favorites = findViewById(R.id.btn_item_favorites);
 
-        // Intent 데이터 받아오기
+        // 데이터 받아오기 : 사용자 지정
         pickedStyle = getIntent().getStringExtra("style") != null ? getIntent().getStringExtra("style") : "all";
         pickedType = getIntent().getStringExtra("type") != null ? getIntent().getStringExtra("type") : "all";;
 
-        // 가구명 배열
-        String types[] = {"bed", "chair", "dresser", "sofa", "table"};
-        // 스타일 배열
-        String styles[] = {"natural", "modern", "classic", "industrial", "zen"};
+        // 기본 데이터 배열
+        String types[] = {"bed", "chair", "dresser", "sofa", "table"};              // 가구
+        String styles[] = {"natural", "modern", "classic", "industrial", "zen"};    // 스타일
 
         arrayList = new ArrayList<>();
 
-        // DB: 데이터베이스 연동
+        // Firebase
+        // 데이터베이스 연동
         database = FirebaseDatabase.getInstance();
-
-        // DB : 데이터베이스 테이블 연결
+        // 데이터베이스 테이블 연결
         databaseReference = database.getReference("all");
 
         // 타이틀 설정
-        TextView tv_title = findViewById(R.id.tv_title);
         chgTitle(tv_title, pickedStyle);
 
-        // 초기화면 세팅
+        // 초기 세팅
         if (pickedStyle != null && !pickedStyle.equals("all")) {
             Arrays.fill(styles, null);
             styles[0] = pickedStyle;
@@ -142,6 +163,13 @@ public class MainActivity extends AppCompatActivity {
                 types[3] = "dresser";
                 types[4] = "table";
 
+                pickedType = "all";
+                if (pressedTypeBtn != type_all) {
+                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_unclicked));
+                    pressedTypeBtn = type_all;
+                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+                }
+
                 Arrays.fill(styles, null);
 
                 switch (v.getId()) {
@@ -211,17 +239,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        Button btn_style_all = findViewById(R.id.btn_style_all);
         btn_style_all.setOnClickListener(onClickListnerByStyle);
-        Button btn_style_natural = findViewById(R.id.btn_style_natural);
         btn_style_natural.setOnClickListener(onClickListnerByStyle);
-        Button btn_style_modern = findViewById(R.id.btn_style_modern);
         btn_style_modern.setOnClickListener(onClickListnerByStyle);
-        Button btn_style_classic = findViewById(R.id.btn_style_classic);
         btn_style_classic.setOnClickListener(onClickListnerByStyle);
-        Button btn_style_industrial = findViewById(R.id.btn_style_industrial);
         btn_style_industrial.setOnClickListener(onClickListnerByStyle);
-        Button btn_style_zen = findViewById(R.id.btn_style_zen);
         btn_style_zen.setOnClickListener(onClickListnerByStyle);
 
         // 초기 화면의 스타일 버튼
@@ -337,17 +359,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        LinearLayout type_all = findViewById(R.id.type_all);
         type_all.setOnClickListener(onClickListenerByType);
-        LinearLayout type_chair = findViewById(R.id.type_chair);
         type_chair.setOnClickListener(onClickListenerByType);
-        LinearLayout type_bed = findViewById(R.id.type_bed);
         type_bed.setOnClickListener(onClickListenerByType);
-        LinearLayout type_sofa = findViewById(R.id.type_sofa);
         type_sofa.setOnClickListener(onClickListenerByType);
-        LinearLayout type_dresser = findViewById(R.id.type_dresser);
         type_dresser.setOnClickListener(onClickListenerByType);
-        LinearLayout type_table = findViewById(R.id.type_table);
         type_table.setOnClickListener(onClickListenerByType);
 
         // 초기 가구의 버튼 배경 설정
@@ -379,7 +395,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // 리사이클러뷰에 LinearLayoutManager 객체 지정
-        recyclerView = findViewById(R.id.list_furniture);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -388,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    // 타이틀 변경 메서드
+    // 타이틀 변경
     public void chgTitle(TextView title, String style) {
         switch (style) {
             case "all" :
