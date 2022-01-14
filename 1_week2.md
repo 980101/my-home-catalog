@@ -52,3 +52,9 @@ public void removeAt(int position, String style) {
 (intent 실행 시)
 - 이전 작업을 모두 삭제 (FLAG_ACTIVITY_CLEAR_TOP) : 메인 화면의 '홈' 버튼 클릭 이벤트
 - 이전 작업만 삭제 (인텐트 플래그 사용 x) : 메인 화면에서 바로 홈 화면으로 이동
+
+# 리팩토링
+: 프로젝트 완성 후, 추가적인 유지보수를 위해 코드를 정리한다.
+
+## 메서드 분리
+하나의 메서드는 한 가지 일만 하도록 구현
