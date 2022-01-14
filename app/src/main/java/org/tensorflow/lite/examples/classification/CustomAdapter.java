@@ -6,33 +6,49 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
-    // 리사이클러뷰의 아이템을 담는 배열
     private ArrayList<CustomData> arrayList;
 
-    // 선택된 아이템의 인덱스 추출
+    int selectedIdx = -1;
+
     public interface OnListItemSelectedInterface {
         void onItemSelected(View v, int position);
     }
 
     private OnListItemSelectedInterface mListener;
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView iv_icon;
-        protected TextView tv_name;
+    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        ImageView iv_icon;
+        TextView tv_name;
 
-        public CustomViewHolder(@NonNull View itemView) {
+        public CustomViewHolder(View itemView) {
             super(itemView);
 
-            this.iv_icon = itemView.findViewById(R.id.iv_custom_item);
-            this.tv_name = itemView.findViewById(R.id.tv_custom_item);
+            iv_icon = itemView.findViewById(R.id.iv_custom_item);
+            tv_name = itemView.findViewById(R.id.tv_custom_item);
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.item_custom :
+                    selectItem(v, getAbsoluteAdapterPosition());
+                    break;
+            }
+        }
+    }
+
+    public void selectItem(View v, int position) {
+        selectedIdx = position;
+        mListener.onItemSelected(v, position);
+        notifyDataSetChanged();
     }
 
     public CustomAdapter(ArrayList<CustomData> arrayList, OnListItemSelectedInterface listener) {
@@ -40,10 +56,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         this.mListener = listener;
     }
 
-    // 아이템이 처음 생성될 때의 생명 주기
-    @NonNull
     @Override
-    public CustomAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CustomAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_button, parent, false);
 
         // 아이템의 크기를 동적으로 변경
@@ -57,26 +71,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         return holder;
     }
 
-    // 아이템이 추가될 때의 생명 주기
-    int itemIdx = -1;
-
     @Override
-    public void onBindViewHolder(@NonNull CustomAdapter.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(CustomAdapter.CustomViewHolder holder, int position) {
         holder.iv_icon.setImageResource(arrayList.get(position).getIv_icon());
         holder.tv_name.setText(arrayList.get(position).getTv_name());
 
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemIdx = holder.getAbsoluteAdapterPosition();
-                mListener.onItemSelected(v,itemIdx);
-                notifyDataSetChanged();
-            }
-        });
-
-        if (itemIdx == holder.getAbsoluteAdapterPosition()) {
-            holder.itemView.setBackgroundResource(R.drawable.btn_custom_clicked);;
+        if (selectedIdx == holder.getAbsoluteAdapterPosition()) {
+            holder.itemView.setBackgroundResource(R.drawable.btn_custom_clicked);
         } else {
             holder.itemView.setBackgroundResource(R.drawable.btn_custom_unclicked);
         }

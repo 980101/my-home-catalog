@@ -1,6 +1,5 @@
 package org.tensorflow.lite.examples.classification;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
     private ArrayList<ItemData> arrayList;
-    private Context context;
 
     public interface OnListItemSelectedInterface {
         void onItemSelected(View v, int position);
@@ -27,26 +25,58 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private OnListItemSelectedInterface mListener;
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView iv_photo;
-        protected TextView tv_name;
-        protected TextView tv_price;
-        protected Button btn_item;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        ImageView iv_photo;
+        TextView tv_name, tv_price;
+        Button btn_item;
 
-        public ViewHolder(View view) {
-            super(view);
+        public ViewHolder(View itemView) {
+            super(itemView);
 
             // 뷰 객체에 대한 참조
-            iv_photo = view.findViewById(R.id.iv_item_favorites);
-            tv_name = view.findViewById(R.id.tv_item_favorites_name);
-            tv_price = view.findViewById(R.id.tv_item_favorites_price);
-            btn_item = view.findViewById(R.id.btn_item_favorites);
+            iv_photo = itemView.findViewById(R.id.iv_item_favorites);
+            tv_name = itemView.findViewById(R.id.tv_item_favorites_name);
+            tv_price = itemView.findViewById(R.id.tv_item_favorites_price);
+            btn_item = itemView.findViewById(R.id.btn_item_favorites);
+
+            itemView.setOnClickListener(this);
+            btn_item.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int pos = getAbsoluteAdapterPosition();
+
+            switch (v.getId()) {
+                case R.id.item_favorites:
+                    goDetail(v, pos);
+                    break;
+                case R.id.btn_item_favorites:
+                    removeItem(v, pos);
+                    break;
+            }
         }
     }
 
-    public FavoritesAdapter(ArrayList<ItemData> arrayList, Context context, OnListItemSelectedInterface onListItemSelectedInterface) {
+    public void goDetail(View v, int position) {
+        Intent intent = new Intent(v.getContext(), DetailActivity.class);
+
+        ItemData data = arrayList.get(position);
+        intent.putExtra("image", data.getImage());
+        intent.putExtra("name", data.getName());
+        intent.putExtra("price", data.getPrice());
+        intent.putExtra("link", data.getLink());
+
+        v.getContext().startActivity(intent);
+    }
+
+    public void removeItem(View v, int position) {
+        mListener.onItemSelected(v, position);
+        notifyDataSetChanged();
+    }
+
+    public FavoritesAdapter(ArrayList<ItemData> arrayList, OnListItemSelectedInterface onListItemSelectedInterface) {
         this.arrayList = arrayList;
-        this.context = context;
         this.mListener = onListItemSelectedInterface;
     }
 
@@ -66,28 +96,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 .into(holder.iv_photo);
         holder.tv_name.setText(data.getName());
         holder.tv_price.setText(data.getPrice());
-
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentToDetail = new Intent(context.getApplicationContext(), DetailActivity.class);
-                intentToDetail.putExtra("image", data.getImage());
-                intentToDetail.putExtra("name", data.getName());
-                intentToDetail.putExtra("price", data.getPrice());
-                intentToDetail.putExtra("link", data.getLink());
-                context.startActivity(intentToDetail);
-            }
-        });
-
-        holder.btn_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int itemIdx = holder.getAbsoluteAdapterPosition();
-                mListener.onItemSelected(v, itemIdx);
-                notifyDataSetChanged();
-            }
-        });
     }
 
     @Override

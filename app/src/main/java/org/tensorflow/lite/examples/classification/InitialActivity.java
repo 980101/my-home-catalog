@@ -7,41 +7,40 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class InitialActivity extends AppCompatActivity {
+public class InitialActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Button btn_favorites, btn_start, btn_custom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial);
 
-        // 즐겨찾기
-        Button btn_favorites = findViewById(R.id.btn_favorites);
-        btn_favorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentToFavorites = new Intent(getApplicationContext(), FavoritesActivity.class);
-                startActivity(intentToFavorites);
-            }
-        });
+        btn_favorites = findViewById(R.id.btn_favorites);
+        btn_start = findViewById(R.id.btn_start);
+        btn_custom = findViewById(R.id.btn_custom);
 
-        // 바로 가기
-        Button btn_start = findViewById(R.id.btn_start);
-        btn_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentToMain = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intentToMain);
-            }
-        });
+        btn_favorites.setOnClickListener(this);
+        btn_start.setOnClickListener(this);
+        btn_custom.setOnClickListener(this);
+    }
 
-        // 맞춤 가구 둘러보기
-        Button btn_custom = findViewById(R.id.btn_custom);
-        btn_custom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentToCustom = new Intent(getApplicationContext(), CustomActivity.class);
-                startActivity(intentToCustom);
-            }
-        });
+    @Override
+    public void onClick(View v) {
+        Intent intent = null;
+
+        switch (v.getId()) {
+            case R.id.btn_favorites:
+                intent = new Intent(getApplicationContext(), FavoritesActivity.class);
+                break;
+            case R.id.btn_start:
+                intent = new Intent(getApplicationContext(), MainActivity.class);
+                break;
+            case R.id.btn_custom:
+                intent = new Intent(getApplicationContext(), CustomActivity.class);
+                break;
+        }
+
+        startActivity(intent);
     }
 }
