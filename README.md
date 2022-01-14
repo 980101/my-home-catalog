@@ -1,5 +1,5 @@
 # My Home Catalog
-이미지 분류 기술을 사용하여 인테리어에 맞는 구매물품을 추천하는 안드로이드 앱
+이미지 분류 기술을 사용하여 **인테리어에 맞는 물품을 추천**하는 안드로이드 앱
 
 1. 카메라를 통해 인테리어 스타일 파악
 2. 인테리어 종류 별 물품 추천
@@ -33,4 +33,4 @@
 
 ◻ 즐겨찾기 화면
 
-<img src="https://user-images.githubusercontent.com/47620950/135586347-e046f9e5-e62e-4c91-8efb-77b20a22e06e.png" width="314" height="536" />
+<img src="https://user-images.githubusercontent.com/47620950/149324857-aba1a8ff-200e-48c6-abb5-6e1cf65da0e0.png" width="314" height="536" />
