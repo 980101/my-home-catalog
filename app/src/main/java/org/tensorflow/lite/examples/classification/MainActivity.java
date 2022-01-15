@@ -23,18 +23,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private ArrayList<ItemData> arrayList;
+    private ArrayList<ItemData> dataList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    private DatabaseReference styleList;
-    private View pressedStyleBtn;
-    private View pressedTypeBtn;
+    private DatabaseReference styleData;
+    private View selectedStyle, selectedType;
     private LinearLayout type_all, type_chair, type_bed
             , type_sofa, type_dresser, type_table;
     private TextView tv_title;
@@ -43,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_style_all, btn_style_natural, btn_style_modern
             , btn_style_classic, btn_style_industrial, btn_style_zen;
     private String pickedStyle, pickedType;
+
+    private String styles[] = {"natural", "modern", "classic", "industrial", "zen"};    // 스타일
+    private String types[] = {"bed", "chair", "dresser", "sofa", "table"};              // 가구
+
+    private ArrayList<String> styleList, typeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +75,16 @@ public class MainActivity extends AppCompatActivity {
         btn_initial = findViewById(R.id.btn_bottom_initial);
         btn_favorites = findViewById(R.id.btn_item_favorites);
 
+        styleList = new ArrayList<>();
+        typeList = new ArrayList<>();
+        dataList = new ArrayList<>();
+
         // 데이터 받아오기 : 사용자 지정
         pickedStyle = getIntent().getStringExtra("style") != null ? getIntent().getStringExtra("style") : "all";
-        pickedType = getIntent().getStringExtra("type") != null ? getIntent().getStringExtra("type") : "all";;
+        pickedType = getIntent().getStringExtra("type") != null ? getIntent().getStringExtra("type") : "all";
 
-        // 기본 데이터 배열
-        String types[] = {"bed", "chair", "dresser", "sofa", "table"};              // 가구
-        String styles[] = {"natural", "modern", "classic", "industrial", "zen"};    // 스타일
-
-        arrayList = new ArrayList<>();
+        selectedStyle = null;
+        selectedType = null;
 
         // Firebase
         // 데이터베이스 연동
@@ -91,153 +95,8 @@ public class MainActivity extends AppCompatActivity {
         // 타이틀 설정
         chgTitle(tv_title, pickedStyle);
 
-        // 초기 세팅
-        if (pickedStyle != null && !pickedStyle.equals("all")) {
-            Arrays.fill(styles, null);
-            styles[0] = pickedStyle;
-        }
-
-        if (pickedType != null && !pickedType.equals("all")) {
-            Arrays.fill(types, null);
-            types[0] = pickedType;
-        }
-
-        for (int i = 0; i < styles.length; i++) {
-            if (styles[i] == null) {
-                break;
-            } else {
-                styleList = databaseReference.child(styles[i]);
-
-                for (int j = 0; j < types.length; j++) {
-                    if (types[j] == null) {
-                        break;
-                    } else {
-
-                        styleList.child(types[j]).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                                    ItemData itemData = postSnapshot.getValue(ItemData.class);
-                                    arrayList.add(itemData);
-                                }
-                                adapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Log.e("MainActivity", String.valueOf(error.toException()));
-                            }
-                        });
-                    }
-                }
-            }
-        }
-
-        // 이벤트 리스너 : 스타일 버튼
-        // 버튼 색상 체크 변수
-        pressedStyleBtn = null;
-
-        View.OnClickListener onClickListnerByStyle = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pressedStyleBtn == null) {
-                    pressedStyleBtn = v;
-                } else if (pressedStyleBtn != v) {
-                    // 이전 버튼 설정
-                    pressedStyleBtn.setBackground(getDrawable(R.drawable.btn_style_unclicked)); // 배경색상
-                    prevBtn = findViewById(pressedStyleBtn.getId()); // 버튼 텍스트 색상
-                    prevBtn.setTextColor(getResources().getColor(R.color.gray_dark));
-
-                    pressedStyleBtn = v;
-                }
-
-                // 현재 (선택된) 버튼 설정
-                v.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                presBtn = findViewById(pressedStyleBtn.getId());
-                presBtn.setTextColor(getResources().getColor(R.color.white));
-
-                Arrays.fill(types, null);
-                types[0] = "bed";
-                types[1] = "chair";
-                types[2] = "sofa";
-                types[3] = "dresser";
-                types[4] = "table";
-
-                pickedType = "all";
-                if (pressedTypeBtn != type_all) {
-                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_unclicked));
-                    pressedTypeBtn = type_all;
-                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-                }
-
-                Arrays.fill(styles, null);
-
-                switch (v.getId()) {
-                    case R.id.btn_style_natural:
-                        styles[0] = "natural";
-                        pickedStyle = "natural";
-                        break;
-                    case R.id.btn_style_modern:
-                        styles[0] = "modern";
-                        pickedStyle = "modern";
-                        break;
-                    case R.id.btn_style_classic:
-                        styles[0] = "classic";
-                        pickedStyle = "classic";
-                        break;
-                    case R.id.btn_style_industrial:
-                        styles[0] = "industrial";
-                        pickedStyle = "industrial";
-                        break;
-                    case R.id.btn_style_zen:
-                        styles[0] = "zen";
-                        pickedStyle = "zen";
-                        break;
-                    case R.id.btn_style_all:
-                        styles[0] = "natural";
-                        styles[1] = "modern";
-                        styles[2] = "classic";
-                        styles[3] = "industrial";
-                        styles[4] = "zen";
-                        pickedStyle = "all";
-                        break;
-                }
-
-                chgTitle(tv_title, pickedStyle);
-
-                arrayList.clear();
-
-                for (int i = 0; i < styles.length; i++) {
-                    // 유효한 스타일이라면,
-                    if (styles[i] == null) {
-                        break;
-                    } else {
-                        styleList = databaseReference.child(styles[i]);
-
-                        for (int j = 0; j < types.length; j++) {
-                            styleList.child(types[j]).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                                // 데이터를 받아오는 경우 호출
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                                        ItemData itemData = postSnapshot.getValue(ItemData.class);
-                                        arrayList.add(itemData);
-                                    }
-                                    adapter.notifyDataSetChanged();
-                                }
-
-                                // 데이터를 받지 못한 경우 호출
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    Log.e("MainActivity", String.valueOf(error.toException()));
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-        };
+        modifyList();
+        loadData();
 
         btn_style_all.setOnClickListener(onClickListnerByStyle);
         btn_style_natural.setOnClickListener(onClickListnerByStyle);
@@ -246,119 +105,6 @@ public class MainActivity extends AppCompatActivity {
         btn_style_industrial.setOnClickListener(onClickListnerByStyle);
         btn_style_zen.setOnClickListener(onClickListnerByStyle);
 
-        // 초기 화면의 스타일 버튼
-        // 배경색상 설정
-        switch (pickedStyle) {
-            case "all" :
-                btn_style_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedStyleBtn = btn_style_all;
-                break;
-            case "natural" :
-                btn_style_natural.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedStyleBtn = btn_style_natural;
-                break;
-            case "modern" :
-                btn_style_modern.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedStyleBtn = btn_style_modern;
-                break;
-            case "classic" :
-                btn_style_classic.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedStyleBtn = btn_style_classic;
-                break;
-            case "industrial" :
-                btn_style_industrial.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedStyleBtn = btn_style_industrial;
-                break;
-            case "zen" :
-                btn_style_zen.setBackground(getDrawable(R.drawable.btn_style_clicked));
-                pressedStyleBtn = btn_style_zen;
-                break;
-        }
-
-        // 버튼 텍스트 설정
-        presBtn = findViewById(pressedStyleBtn.getId());
-        presBtn.setTextColor(getResources().getColor(R.color.white));
-
-        // 이벤트 리스너 : 가구 버튼
-        pressedTypeBtn = null;
-
-        View.OnClickListener onClickListenerByType = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (pressedTypeBtn == null) {
-                    pressedTypeBtn = v;
-                } else if (pressedTypeBtn != v) {
-                    pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_unclicked));
-                    pressedTypeBtn = v;
-                }
-
-                pressedTypeBtn.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-
-                Arrays.fill(types, null);
-
-                switch (v.getId()) {
-                    case R.id.type_chair :
-                        types[0] = "chair";
-                        break;
-                    case R.id.type_bed:
-                        types[0] = "bed";
-                        break;
-                    case R.id.type_sofa:
-                        types[0] = "sofa";
-                        break;
-                    case R.id.type_dresser:
-                        types[0] = "dresser";
-                        break;
-                    case R.id.type_table:
-                        types[0] = "table";
-                        break;
-                    case R.id.type_all:
-                        types[0] = "chair";
-                        types[1] = "bed";
-                        types[2] = "sofa";
-                        types[3] = "dresser";
-                        types[4] = "table";
-                        break;
-                }
-
-                arrayList.clear();
-
-                for (int i = 0; i < styles.length; i++) {
-                    // 유효한 스타일이라면,
-                    if (styles[i] == null) {
-                        break;
-                    } else {
-                        styleList = databaseReference.child(styles[i]);
-
-                        for (int j = 0; j < types.length; j++) {
-                            if (types[j] == null) {
-                                break;
-                            } else {
-                                styleList.child(types[j]).addListenerForSingleValueEvent(new ValueEventListener() {
-
-                                    // 데이터를 받아오는 경우 호출
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                                            ItemData itemData = postSnapshot.getValue(ItemData.class);
-                                            arrayList.add(itemData);
-                                        }
-                                        adapter.notifyDataSetChanged();
-                                    }
-
-                                    // 데이터를 받지 못한 경우 호출
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Log.e("MainActivity", String.valueOf(error.toException()));
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
         type_all.setOnClickListener(onClickListenerByType);
         type_chair.setOnClickListener(onClickListenerByType);
         type_bed.setOnClickListener(onClickListenerByType);
@@ -366,41 +112,201 @@ public class MainActivity extends AppCompatActivity {
         type_dresser.setOnClickListener(onClickListenerByType);
         type_table.setOnClickListener(onClickListenerByType);
 
+        switch (pickedStyle) {
+            case "all" :
+                btn_style_all.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                selectedStyle = btn_style_all;
+                break;
+            case "natural" :
+                btn_style_natural.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                selectedStyle = btn_style_natural;
+                break;
+            case "modern" :
+                btn_style_modern.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                selectedStyle = btn_style_modern;
+                break;
+            case "classic" :
+                btn_style_classic.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                selectedStyle = btn_style_classic;
+                break;
+            case "industrial" :
+                btn_style_industrial.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                selectedStyle = btn_style_industrial;
+                break;
+            case "zen" :
+                btn_style_zen.setBackground(getDrawable(R.drawable.btn_style_clicked));
+                selectedStyle = btn_style_zen;
+                break;
+        }
+
+        presBtn = findViewById(selectedStyle.getId());
+        presBtn.setTextColor(getResources().getColor(R.color.white));
+
         // 초기 가구의 버튼 배경 설정
         switch (pickedType) {
             case "all" :
                 type_all.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-                pressedTypeBtn = type_all;
+                selectedType = type_all;
                 break;
             case "chair" :
                 type_chair.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-                pressedTypeBtn = type_chair;
+                selectedType = type_chair;
                 break;
             case "bed" :
                 type_bed.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-                pressedTypeBtn = type_bed;
+                selectedType = type_bed;
                 break;
             case "sofa" :
                 type_sofa.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-                pressedTypeBtn = type_sofa;
+                selectedType = type_sofa;
                 break;
             case "dresser" :
                 type_dresser.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-                pressedTypeBtn = type_dresser;
+                selectedType = type_dresser;
                 break;
             case "table" :
                 type_table.setBackground(getDrawable(R.drawable.btn_custom_clicked));
-                pressedTypeBtn = type_table;
+                selectedType = type_table;
                 break;
         }
 
-        // 리사이클러뷰에 LinearLayoutManager 객체 지정
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 리사이클러뷰에 ItemData 객체 지정
-        adapter = new ItemAdapter(arrayList, this);
+        adapter = new ItemAdapter(dataList);
         recyclerView.setAdapter(adapter);
+    }
+
+    View.OnClickListener onClickListnerByStyle = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            if (selectedStyle != v) {
+                // 이전 버튼 설정
+                selectedStyle.setBackground(getDrawable(R.drawable.btn_style_unclicked)); // 배경색상
+                prevBtn = findViewById(selectedStyle.getId()); // 버튼 텍스트 색상
+                prevBtn.setTextColor(getResources().getColor(R.color.gray_dark));
+            }
+
+            selectedStyle = v;
+            v.setBackground(getDrawable(R.drawable.btn_style_clicked));
+            presBtn = findViewById(selectedStyle.getId());
+            presBtn.setTextColor(getResources().getColor(R.color.white));
+
+            // 모든 타입
+            pickedType = "all";
+            if (selectedType != type_all) {
+                selectedType.setBackground(getDrawable(R.drawable.btn_custom_unclicked));
+                selectedType = type_all;
+                selectedType.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+            }
+
+            switch (v.getId()) {
+                case R.id.btn_style_natural:
+                    pickedStyle = "natural";
+                    break;
+                case R.id.btn_style_modern:
+                    pickedStyle = "modern";
+                    break;
+                case R.id.btn_style_classic:
+                    pickedStyle = "classic";
+                    break;
+                case R.id.btn_style_industrial:
+                    pickedStyle = "industrial";
+                    break;
+                case R.id.btn_style_zen:
+                    pickedStyle = "zen";
+                    break;
+                case R.id.btn_style_all:
+                    pickedStyle = "all";
+                    break;
+            }
+
+            modifyList();
+            chgTitle(tv_title, pickedStyle);
+            dataList.clear();
+            loadData();
+        }
+    };
+
+    View.OnClickListener onClickListenerByType = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (selectedType != v) selectedType.setBackground(getDrawable(R.drawable.btn_custom_unclicked));
+
+            selectedType = v;
+            selectedType.setBackground(getDrawable(R.drawable.btn_custom_clicked));
+
+            switch (v.getId()) {
+                case R.id.type_chair :
+                    pickedType = "chair";
+                    break;
+                case R.id.type_bed:
+                    pickedType = "bed";
+                    break;
+                case R.id.type_sofa:
+                    pickedType = "sofa";
+                    break;
+                case R.id.type_dresser:
+                    pickedType = "dresser";
+                    break;
+                case R.id.type_table:
+                    pickedType = "table";
+                    break;
+                case R.id.type_all:
+                    pickedType = "all";
+                    break;
+            }
+
+            modifyList();
+            dataList.clear();
+            loadData();
+        }
+    };
+
+    public void modifyList() {
+        styleList.clear();
+        typeList.clear();
+
+        if (pickedStyle.equals("all")) {
+            for (String style:styles) {
+                styleList.add(style);
+            }
+        } else {
+            styleList.add(pickedStyle);
+        }
+
+        if (pickedType.equals("all")) {
+            for (String type:types) {
+                typeList.add(type);
+            }
+        } else {
+            typeList.add(pickedType);
+        }
+    }
+
+    public void loadData() {
+
+        for (int i = 0; i < styleList.size(); i++) {
+            styleData = databaseReference.child(styleList.get(i));
+
+            for (int j = 0; j < typeList.size(); j++) {
+                styleData.child(typeList.get(j)).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                            ItemData itemData = postSnapshot.getValue(ItemData.class);
+                            dataList.add(itemData);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("MainActivity", String.valueOf(error.toException()));
+                    }
+                });
+            }
+        }
     }
 
     // 타이틀 변경

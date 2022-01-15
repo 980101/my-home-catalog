@@ -81,14 +81,17 @@ public abstract class CameraActivity extends AppCompatActivity
   private int yRowStride;
   private Runnable postInferenceCallback;
   private Runnable imageConverter;
-  private String recognitionStyle;
-
   private Device device = Device.CPU;
   private int numThreads = -1;
 
-  String shared = "file";
   public static Context mContext;
   public SharedPreferences mPreferences;
+
+  private HistoryAdapter adapter;
+  private RecyclerView recyclerView;
+  private ArrayList<String> arrayList;
+  private Button btn_capture;
+  private String recognitionStyle;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -97,62 +100,71 @@ public abstract class CameraActivity extends AppCompatActivity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     setContentView(R.layout.tfe_ic_activity_camera);
 
-    mContext = this;
-
     if (hasPermission()) {
       setFragment();
     } else {
       requestPermission();
     }
 
+    recyclerView = findViewById(R.id.rv_history);
+    btn_capture = findViewById(R.id.btn_capture);
+
+    btn_capture.setOnClickListener(onClickListener);
+
+    mContext = this;
+
     // SharedPreferences 객체 생성
-    mPreferences = getSharedPreferences(shared, MODE_PRIVATE);
+    mPreferences = getSharedPreferences("file", MODE_PRIVATE);
 
-    // '촬영하기' 버튼 클릭 이벤트
-    Button btn_capture = findViewById(R.id.btn_capture);
-    btn_capture.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (!TextUtils.isEmpty(recognitionStyle)) {
-
-          // 히스토리 리스트 : 저장
-          SharedPreferences.Editor editor = mPreferences.edit();
-
-          if (mPreferences.contains(recognitionStyle)) {  // 저장된 값이 있으면 삭제
-            editor.remove(recognitionStyle);
-            editor.commit();
-          }
-
-          editor.putString(recognitionStyle, recognitionStyle); // 파일에 저장될 형태 (별명, 값)
-          editor.apply();
-
-          // Intent 데이터 받아오기
-          String furniture = getIntent().getStringExtra("type");
-
-          Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-          intent.putExtra("style", recognitionStyle);
-          intent.putExtra("type", furniture);
-          startActivity(intent);
-        }
-      }
-    });
-
-    ArrayList<String> list = new ArrayList<String>();
-
-    // 히스토리 리스트 : 데이터 가공 및 출력
+    arrayList = new ArrayList<>();
     Map<String, ?> allValue = mPreferences.getAll();
     for (Map.Entry<String, ?> entry : allValue.entrySet()) {
-      list.add(mPreferences.getString(entry.getKey(), "no value"));
+      arrayList.add(mPreferences.getString(entry.getKey(), "no value"));
     }
 
-    RecyclerView recyclerView = findViewById(R.id.rv_history);
     recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-    // 아이템 사이의 margin 설정
+
     int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing_small);
     recyclerView.addItemDecoration(new HistoryItemDecoration(spacingInPixels));
 
-    HistoryAdapter adapter = new HistoryAdapter(list);
+    adapter = new HistoryAdapter(arrayList);
     recyclerView.setAdapter(adapter);
+  }
+
+  View.OnClickListener onClickListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      switch (v.getId()) {
+        case R.id.btn_capture:
+          goMain();
+          break;
+      }
+    }
+  };
+
+  public void goMain () {
+    if (!TextUtils.isEmpty(recognitionStyle)) {
+      saveStyle();
+
+      String furniture = getIntent().getStringExtra("type");
+
+      Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+      intent.putExtra("style", recognitionStyle);
+      intent.putExtra("type", furniture);
+      startActivity(intent);
+    }
+  }
+
+  public void saveStyle() {
+    SharedPreferences.Editor editor = mPreferences.edit();
+
+    if (mPreferences.contains(recognitionStyle)) {  // 저장된 값이 있으면 삭제
+      editor.remove(recognitionStyle);
+      editor.commit();
+    }
+
+    editor.putString(recognitionStyle, recognitionStyle); // 파일에 저장될 형태 (별명, 값)
+    editor.apply();
   }
 
   protected int[] getRgbBytes() {
@@ -483,10 +495,9 @@ public abstract class CameraActivity extends AppCompatActivity
     if (results != null && results.size() >= 3) {
       Recognition recognition = results.get(0);
       if (recognition != null) {
-        if (recognition.getConfidence() != null) {
-          if (recognition.getConfidence() >= 0.9) {
-            recognitionStyle = recognition.getTitle();
-          }
+        float confidence = recognition.getConfidence();
+        if (confidence >= 0.9) {
+          recognitionStyle = recognition.getTitle();
         }
       }
     }

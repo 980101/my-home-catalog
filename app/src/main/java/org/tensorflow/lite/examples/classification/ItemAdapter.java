@@ -1,6 +1,5 @@
 package org.tensorflow.lite.examples.classification;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,42 +16,54 @@ import java.util.ArrayList;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private ArrayList<ItemData> arrayList;
-    private Context context;
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView iv_photo;
-        private final TextView tv_name;
-        private final TextView tv_price;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        ImageView iv_photo;
+        TextView tv_name;
+        TextView tv_price;
 
-        public ViewHolder(View view) {
-            super(view);
+        public ViewHolder(View itemView) {
+            super(itemView);
 
             // 뷰 객체에 대한 참조
-            iv_photo = view.findViewById(R.id.iv_photo);
-            tv_name = view.findViewById(R.id.tv_name);
-            tv_price = view.findViewById(R.id.tv_price);
+            iv_photo = itemView.findViewById(R.id.iv_photo);
+            tv_name = itemView.findViewById(R.id.tv_name);
+            tv_price = itemView.findViewById(R.id.tv_price);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.item_main:
+                    goDetail(v, getAbsoluteAdapterPosition());
+                    break;
+            }
         }
     }
 
+    public void goDetail(View v, int position) {
+        Intent intent = new Intent(v.getContext(), DetailActivity.class);
+
+        ItemData data = arrayList.get(position);
+        intent.putExtra("image", data.getImage());
+        intent.putExtra("name", data.getName());
+        intent.putExtra("price", data.getPrice());
+        intent.putExtra("link", data.getLink());
+
+        v.getContext().startActivity(intent);
+    }
+
     // 생성자에서 데이터 리스트 객체를 전달받음
-    public ItemAdapter(ArrayList<ItemData> arrayList, Context context) {
+    public ItemAdapter(ArrayList<ItemData> arrayList) {
         this.arrayList = arrayList;
-        this.context = context;
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        /*
-        아래와 같다.
-        Context context = parent.getContext();
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_funiture, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        */
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_furniture, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
@@ -69,18 +80,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         viewHolder.tv_name.setText(data.getName());
         viewHolder.tv_price.setText(data.getPrice());
 
-        viewHolder.itemView.setTag(position);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentToDetail = new Intent(context.getApplicationContext(), DetailActivity.class);
-                intentToDetail.putExtra("image", data.getImage());
-                intentToDetail.putExtra("name", data.getName());
-                intentToDetail.putExtra("price", data.getPrice());
-                intentToDetail.putExtra("link", data.getLink());
-                context.startActivity(intentToDetail);
-            }
-        });
+//        viewHolder.itemView.setTag(position);
+//        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intentToDetail = new Intent(context.getApplicationContext(), DetailActivity.class);
+//                intentToDetail.putExtra("image", data.getImage());
+//                intentToDetail.putExtra("name", data.getName());
+//                intentToDetail.putExtra("price", data.getPrice());
+//                intentToDetail.putExtra("link", data.getLink());
+//                context.startActivity(intentToDetail);
+//            }
+//        });
     }
 
     // getItemCount() - 전체 데이터 개수 리턴
