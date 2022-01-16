@@ -20,25 +20,23 @@ public class MyJson {
 
     public static boolean checkData(Context context, String name) {
 
-        // 기존의 데이터를 가져오기
-        String prev = getData(context);
+        String prev = getData(context); // 기존 데이터
 
-        if (prev == null) {
-            return false;
-        } else {
-            try {
-                JSONArray prevArray = new JSONArray(prev);
+        if (prev == null) return false;
 
-                for (int i = 0; i < prevArray.length(); i++) {
-                    JSONObject object = prevArray.getJSONObject(i);
-                    String prevName = object.getString("Name"); // 확인할 데이터의 Name 값
+        try {
+            JSONArray prevArray = new JSONArray(prev);
 
-                    if (prevName.equals(name)) return true;
-                }
-            } catch (JSONException e) {
-                Log.e("TAG", "Error in Loading: " + e.getLocalizedMessage());
+            for (int i = 0; i < prevArray.length(); i++) {
+                JSONObject object = prevArray.getJSONObject(i);
+                String prevName = object.getString("Name"); // 확인할 데이터의 Name 값
+
+                if (prevName.equals(name)) return true;
             }
+        } catch (JSONException e) {
+            Log.e("TAG", "Error in Loading: " + e.getLocalizedMessage());
         }
+
         return false;
     }
 
@@ -108,7 +106,7 @@ public class MyJson {
     }
 
     public static void deleteData(Context context, int position) {
-        // 기존 데이터를 가져오기
+
         String saved = getData(context);
 
         JSONArray newArray = new JSONArray();

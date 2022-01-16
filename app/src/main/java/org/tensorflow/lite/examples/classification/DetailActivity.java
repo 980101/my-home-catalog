@@ -20,15 +20,21 @@ import org.json.JSONObject;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private MyJson item = new MyJson();
+    private ImageView iv_image;
+    private TextView tv_name, tv_price;
     private Button btn_save;
     private String image, name, price, link;
     private Boolean isExisted;
-    private MyJson item = new MyJson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        iv_image = findViewById(R.id.iv_detail);
+        tv_name = findViewById(R.id.tv_detail_name);
+        tv_price = findViewById(R.id.tv_detail_price);
 
         btn_save = findViewById(R.id.btn_detail);
 
@@ -39,15 +45,8 @@ public class DetailActivity extends AppCompatActivity {
         link = getIntent().getStringExtra("link");
 
         // 이미지 설정
-        ImageView iv_image = findViewById(R.id.iv_detail);
         Glide.with(iv_image).load(image).into(iv_image);
-
-        // 이름 설정
-        TextView tv_name = findViewById(R.id.tv_detail_name);
         tv_name.setText(name);
-
-        // 가격 설정
-        TextView tv_price = findViewById(R.id.tv_detail_price);
         tv_price.setText(price);
 
         // 즐겨찾기 여부 체크
