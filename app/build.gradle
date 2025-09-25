@@ -7,6 +7,7 @@ assert file(project.ext.ASSET_DIR + "/model.tflite").exists()
 assert file(project.ext.ASSET_DIR + "/labels.txt").exists()
 
 android {
+    namespace 'org.tensorflow.lite.examples.classification'
     compileSdkVersion 30
     defaultConfig {
         applicationId "org.tensorflow.lite.examples.classification"
@@ -49,7 +50,7 @@ dependencies {
 
     // DB 적용을 위한 설정
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'com.google.firebase:firebase-database:20.0.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 

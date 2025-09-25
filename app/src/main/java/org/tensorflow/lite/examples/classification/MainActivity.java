@@ -201,26 +201,42 @@ public class MainActivity extends AppCompatActivity {
                 selectedType.setBackground(getDrawable(R.drawable.btn_custom_clicked));
             }
 
-            switch (v.getId()) {
-                case R.id.btn_style_natural:
-                    pickedStyle = "natural";
-                    break;
-                case R.id.btn_style_modern:
-                    pickedStyle = "modern";
-                    break;
-                case R.id.btn_style_classic:
-                    pickedStyle = "classic";
-                    break;
-                case R.id.btn_style_industrial:
-                    pickedStyle = "industrial";
-                    break;
-                case R.id.btn_style_zen:
-                    pickedStyle = "zen";
-                    break;
-                case R.id.btn_style_all:
-                    pickedStyle = "all";
-                    break;
+            int id = v.getId();
+
+            if (id == R.id.btn_style_natural) {
+                pickedStyle = "natural";
+            } else if (id == R.id.btn_style_modern) {
+                pickedStyle = "modern";
+            } else if (id == R.id.btn_style_classic) {
+                pickedStyle = "classic";
+            } else if (id == R.id.btn_style_industrial) {
+                pickedStyle = "industrial";
+            } else if (id == R.id.btn_style_zen) {
+                pickedStyle = "zen";
+            } else if (id == R.id.btn_style_all) {
+                pickedStyle = "all";
             }
+
+//            switch (v.getId()) {
+//                case R.id.btn_style_natural:
+//                    pickedStyle = "natural";
+//                    break;
+//                case R.id.btn_style_modern:
+//                    pickedStyle = "modern";
+//                    break;
+//                case R.id.btn_style_classic:
+//                    pickedStyle = "classic";
+//                    break;
+//                case R.id.btn_style_industrial:
+//                    pickedStyle = "industrial";
+//                    break;
+//                case R.id.btn_style_zen:
+//                    pickedStyle = "zen";
+//                    break;
+//                case R.id.btn_style_all:
+//                    pickedStyle = "all";
+//                    break;
+//            }
 
             modifyList();
             chgTitle(tv_title, pickedStyle);
@@ -237,26 +253,42 @@ public class MainActivity extends AppCompatActivity {
             selectedType = v;
             selectedType.setBackground(getDrawable(R.drawable.btn_custom_clicked));
 
-            switch (v.getId()) {
-                case R.id.type_chair :
-                    pickedType = "chair";
-                    break;
-                case R.id.type_bed:
-                    pickedType = "bed";
-                    break;
-                case R.id.type_sofa:
-                    pickedType = "sofa";
-                    break;
-                case R.id.type_dresser:
-                    pickedType = "dresser";
-                    break;
-                case R.id.type_table:
-                    pickedType = "table";
-                    break;
-                case R.id.type_all:
-                    pickedType = "all";
-                    break;
+            int id = v.getId();
+
+            if (id == R.id.type_chair) {
+                pickedType = "chair";
+            } else if (id == R.id.type_bed) {
+                pickedType = "bed";
+            } else if (id == R.id.type_sofa) {
+                pickedType = "sofa";
+            } else if (id == R.id.type_dresser) {
+                pickedType = "dresser";
+            } else if (id == R.id.type_table) {
+                pickedType = "table";
+            } else if (id == R.id.type_all) {
+                pickedType = "all";
             }
+
+//            switch (v.getId()) {
+//                case R.id.type_chair :
+//                    pickedType = "chair";
+//                    break;
+//                case R.id.type_bed:
+//                    pickedType = "bed";
+//                    break;
+//                case R.id.type_sofa:
+//                    pickedType = "sofa";
+//                    break;
+//                case R.id.type_dresser:
+//                    pickedType = "dresser";
+//                    break;
+//                case R.id.type_table:
+//                    pickedType = "table";
+//                    break;
+//                case R.id.type_all:
+//                    pickedType = "all";
+//                    break;
+//            }
 
             modifyList();
             dataList.clear();

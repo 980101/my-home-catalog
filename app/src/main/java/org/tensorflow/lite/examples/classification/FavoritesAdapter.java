@@ -47,14 +47,22 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         public void onClick(View v) {
             int pos = getAbsoluteAdapterPosition();
 
-            switch (v.getId()) {
-                case R.id.item_favorites:
-                    goDetail(v, pos);
-                    break;
-                case R.id.btn_item_favorites:
-                    removeItem(v, pos);
-                    break;
+            int id = v.getId();
+
+            if (id == R.id.item_favorites) {
+                goDetail(v, pos);
+            } else if (id == R.id.btn_item_favorites) {
+                removeItem(v, pos);
             }
+
+//            switch (v.getId()) {
+//                case R.id.item_favorites:
+//                    goDetail(v, pos);
+//                    break;
+//                case R.id.btn_item_favorites:
+//                    removeItem(v, pos);
+//                    break;
+//            }
         }
     }
 

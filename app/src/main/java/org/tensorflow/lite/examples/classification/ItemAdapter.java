@@ -36,11 +36,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.item_main:
-                    goDetail(v, getAbsoluteAdapterPosition());
-                    break;
-            }
+
+            if (v.getId() == R.id.item_main) goDetail(v, getAbsoluteAdapterPosition());
+
+//            switch (v.getId()) {
+//                case R.id.item_main:
+//                    goDetail(v, getAbsoluteAdapterPosition());
+//                    break;
+//            }
         }
     }
 

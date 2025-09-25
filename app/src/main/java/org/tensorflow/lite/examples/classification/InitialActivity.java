@@ -29,17 +29,27 @@ public class InitialActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         Intent intent = null;
 
-        switch (v.getId()) {
-            case R.id.btn_favorites:
-                intent = new Intent(getApplicationContext(), FavoritesActivity.class);
-                break;
-            case R.id.btn_start:
-                intent = new Intent(getApplicationContext(), MainActivity.class);
-                break;
-            case R.id.btn_custom:
-                intent = new Intent(getApplicationContext(), CustomActivity.class);
-                break;
+        int id = v.getId();
+
+        if (id == R.id.btn_favorites) {
+            intent = new Intent(getApplicationContext(), FavoritesActivity.class);
+        } else if (id == R.id.btn_start) {
+            intent = new Intent(getApplicationContext(), MainActivity.class);
+        } else if (id == R.id.btn_custom) {
+            intent = new Intent(getApplicationContext(), CustomActivity.class);
         }
+
+//        switch (v.getId()) {
+//            case R.id.btn_favorites:
+//                intent = new Intent(getApplicationContext(), FavoritesActivity.class);
+//                break;
+//            case R.id.btn_start:
+//                intent = new Intent(getApplicationContext(), MainActivity.class);
+//                break;
+//            case R.id.btn_custom:
+//                intent = new Intent(getApplicationContext(), CustomActivity.class);
+//                break;
+//        }
 
         startActivity(intent);
     }

@@ -134,11 +134,13 @@ public abstract class CameraActivity extends AppCompatActivity
   View.OnClickListener onClickListener = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-      switch (v.getId()) {
-        case R.id.btn_capture:
-          goMain();
-          break;
-      }
+      if (v.getId() == R.id.btn_capture) goMain();
+
+//      switch (v.getId()) {
+//        case R.id.btn_capture:
+//          goMain();
+//          break;
+//      }
     }
   };
 

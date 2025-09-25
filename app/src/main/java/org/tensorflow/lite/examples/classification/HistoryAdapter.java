@@ -35,14 +35,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             int pos =getAbsoluteAdapterPosition();
             String style = tv_history.getText().toString();
 
-            switch (v.getId()) {
-                case R.id.item_history:
-                    goMain(v, pos, style);
-                    break;
-                case R.id.btn_item_history:
-                    removeAt(pos, style);
-                    break;
-            }
+            if (v.getId() == R.id.item_history) goMain(v, pos, style);
+            else if (v.getId() == R.id.btn_item_history) removeAt(pos, style);
+
+//            switch (v.getId()) {
+//                case R.id.item_history:
+//                    goMain(v, pos, style);
+//                    break;
+//                case R.id.btn_item_history:
+//                    removeAt(pos, style);
+//                    break;
+//            }
         }
     }
 

@@ -37,11 +37,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.item_custom :
-                    selectItem(v, getAbsoluteAdapterPosition());
-                    break;
-            }
+            if (v.getId() == R.id.item_custom) selectItem(v, getAbsoluteAdapterPosition());
+
+//            switch (v.getId()) {
+//                case R.id.item_custom :
+//                    selectItem(v, getAbsoluteAdapterPosition());
+//                    break;
+//            }
         }
     }
 
